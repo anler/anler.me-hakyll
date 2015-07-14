@@ -1,0 +1,321 @@
+/******************************************************
+ * I copied these styles from markdotto.com, who is
+ * the creator of bootstrap, and I also did some
+ * modification. Thanks Mark for the beautiful theme,
+ * so I reserved the @mdo sign below.
+ *****************************************************/
+
+/*
+  __
+  __                  /\ \
+  /'_`\_    ___ ___    \_\ \    ___
+  /'/'_` \ /' __` __`\  /'_` \  / __`\
+  /\ \ \L\ \/\ \/\ \/\ \/\ \L\ \/\ \L\ \
+  \ \ `\__,_\ \_\ \_\ \_\ \___,_\ \____/
+  \ `\_____\\/_/\/_/\/_/\/__,_ /\/___/
+  `\/_____/
+
+*/
+
+
+
+/* Body resets
+   -------------------------------------------------- */
+
+* {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    width: 1024px;
+    margin: 0 auto;
+    padding: 20px;
+    text-rendering: optimizelegibility;
+    font: 400 14px/1.6 'Open Sans', Verdana, Helvetica, sans-serif;
+    line-height: 1.5;
+    color: #666;
+    background-color: #fff;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    -moz-font-feature-settings:"liga" on;
+}
+p {
+    margin: 0 0 20px;
+}
+
+h1, h2, h3, h4 {
+    font: 400 60px/1.3 'Bree Serif', Georgia, serif;
+    position: relative;
+    margin: 30px 0 20px;
+    color: #111;
+}
+h1:before, h2:before, h3:before, h4:before {
+    position: absolute;
+    top: auto;
+    color: #ccc;
+}
+h1:before {
+    content: "*";
+    left: -.75em;
+    top: .25em;
+}
+h2:before {
+    content: "**";
+    left: -1.25em;
+    top: .25em;
+}
+h3:before {
+    content: "***";
+    left: -1.75em;
+    top: .25em;
+}
+h4:before {
+    content: "****";
+    left: -2.15em;
+    top: .25em;
+}
+i, em, b, strong {
+    padding-left: .1em;
+    padding-right: .1em;
+}
+b, strong {
+    font-weight: bold;
+    color: #333;
+}
+b:before, b:after, strong:before, strong:after {
+    content: "*";
+}
+i:before, i:after, em:before, em:after {
+    content: "/";
+}
+hr {
+    margin: 0;
+    border: 0;
+}
+hr:after {
+    display: block;
+    margin: 20px 0;
+    content: "----------------------------------------------------------------";
+    color: #ccc;
+}
+ul, ol {
+    padding: 0;
+    margin: 0 0 20px;
+}
+code, pre {
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+}
+
+pre > code {
+    font-size: 1.6em;
+}
+
+p > code:before, p > code:after {
+    content: "=";
+    color: #ccc;
+}
+pre {
+    display: block;
+    margin: 0 0 14px;
+    padding: 15px;
+    border-radius: 3px 3px 3px 3px;
+    font-size: 18px;
+    line-height: 28px;
+    background-color: #f5f5f5;
+    overflow-x: auto;
+    /* white-space: pre; */
+    /* white-space: pre-wrap; */
+    /* word-break: break-all; */
+    /* word-wrap: break-word; */
+}
+blockquote {
+    padding: 0 0 0 20px;
+    margin: 0 30px 20px -22.5px;
+    color: #999;
+    border-left: 8px solid #e5e5e5;
+}
+blockquote p:last-child {
+    margin-bottom: 0;
+}
+img {
+    display: block;
+    margin: 0;
+    border-radius: 5px;
+}
+a {
+    font-weight: inherit;
+    line-height: inherit;
+    color: #000;
+    text-decoration: none;
+}
+sup a:before {
+    content: "[";
+}
+sup a:after {
+    content: "]";
+}
+a:hover {
+    text-decoration: underline;
+}
+table {
+    line-height: 2.5;
+    margin-bottom: 15px;
+    max-width: 100%;
+    width: 100%;
+}
+table td, table th {
+    padding: 0 15px;
+}
+table th.left, table td.left {
+    text-align: left;
+}
+table th.right, table td.right {
+    text-align: right;
+}
+/******************************************************/
+/* head */
+header nav {
+    font-family: Enriqueta, serif;
+    color: #888;
+}
+
+header nav:after {
+    display: block;
+    content: '----------------------------------------------------------------';
+    margin: 10px 0;
+    color: #ccc;
+}
+header nav a {
+    color: #333;
+}
+header nav ul {
+    list-style: none;
+}
+header nav li {
+    display: inline-block;
+}
+header nav li + li:before {
+    display: inline-block;
+    content: "\00B7 \00a0";
+    color: #ccc;
+}
+
+/* post */
+.post {
+    position: relative;
+}
+.post:after {
+    display: block;
+    content: "-----------------------------------------------------------------------";
+    color: #ccc;
+}
+.post img {
+    max-width: 100%;
+}
+.post li {
+    list-style: none outside none;
+}
+.post ul > li:before {
+    content: "- ";
+    color: #ccc;
+}
+.post ol {
+    counter-reset: o-list;
+}
+.post ol > li:before {
+    content: counter(o-list) ") ";
+    counter-increment: o-list;
+    color: #ccc;
+}
+
+/* special for li in pre */
+.post pre li {
+    list-style-type: decimal;
+}
+
+.post pre li:before {
+    display: none;
+}
+
+/* meta info */
+.post-info {
+    display: inline-block;
+    margin: -10px 0 -10px;
+    color: #999;
+}
+.post-info + .post-info:before {
+    content: "\2223 \00a0";
+}
+.post-meta:after {
+    content: "----------------------------------------------------------------";
+    display: block;
+    margin-top: -1px;
+    color: #ccc;
+}
+
+/* footer */
+footer {
+    margin: 80px 0 0;
+    text-align: center;
+    font-size: .6em;
+    color: #999;
+}
+footer > p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Responsive
+   -------------------------------------------------- */
+
+@media (min-width: 768px) {
+    /* Increase body padding and font-sizes */
+    body {
+        padding: 30px;
+        font-size: 24px;
+        line-height: 1.4;
+    }
+    h1:before, h2:before, h3:before {
+        display: inline;
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        padding: 30px
+    }
+}
+
+/* Generated by pandoc. */
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode, table.sourceCode pre
+   { margin: 0; padding: 0; border: 0; vertical-align: baseline; border: none; }
+td.lineNumbers { border-right: 1px solid #AAAAAA; text-align: right; color: #AAAAAA; padding-right: 5px; padding-left: 5px; }
+td.sourceCode { padding-left: 5px; }
+.sourceCode span.kw { color: #007020; font-weight: bold; }
+.sourceCode span.dt { color: #902000; }
+.sourceCode span.dv { color: #40a070; }
+.sourceCode span.bn { color: #40a070; }
+.sourceCode span.fl { color: #40a070; }
+.sourceCode span.ch { color: #4070a0; }
+.sourceCode span.st { color: #4070a0; }
+.sourceCode span.co { color: #60a0b0; font-style: italic; }
+.sourceCode span.ot { color: #007020; }
+.sourceCode span.al { color: red; font-weight: bold; }
+.sourceCode span.fu { color: #06287e; }
+.sourceCode span.re { }
+.sourceCode span.er { color: red; font-weight: bold; }
+
+blockquote {
+    font-family: 'Bree Serif', Georgia, serif;
+    background: #f9f9f9;
+    border-left: 10px solid #ccc;
+    margin: 1.5em 10px;
+    padding: 0.5em 10px;
+}
+

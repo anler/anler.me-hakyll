@@ -1,0 +1,247 @@
+---
+title: Fold you so
+---
+
+#+BEGIN_QUOTE
+A *higher-order* function is a function that receives a function as a parameter and/or
+returns a function as its result.
+#+END_QUOTE
+
+The *fold* family of functions are characterized for applying a given operator over a data
+structure in order to build another value or data structure. They are present in many languages
+with the name of *reduce* but I try to avoid that term since it may lead to confusion when the
+result is the same data structure.
+
+I'm going to focus in fold functions over lists but they can be applied to other data structures
+such as trees.
+
+There are two variants of a fold:
+
+1. fold-right (foldr)
+2. fold-left (foldl)
+
+** Foldl
+
+Let's start by the fold left which is the simpler one and less universal.
+
+What foldl does is abstract the following /tail/ recursive equation:
+
+#+BEGIN_SRC text
+  f acc []     = acc
+  f acc (x:xs) = f (acc ⊕ x) xs
+#+END_SRC
+
+Let's see some functions implemented using it:
+
+#+BEGIN_SRC haskell
+  and' :: [Bool] -> Bool
+  and' xs = f True xs
+      where f acc [] = acc
+            f acc (x:xs) = f (acc && x) xs
+
+  or' :: [Bool] -> Bool
+  or' xs = f False xs
+      where f acc [] = acc
+            f acc (x:xs) = f (acc || x) xs
+
+  sum' :: Num a => [a] -> a
+  sum' xs = f 0 xs
+      where f acc [] = acc
+            f acc (x:xs) = f (acc + x) xs
+
+#+END_SRC
+
+as you can see there's a lot of repetition going on, that's where foldl steps in. In order to
+abstract that pattern in one function we need a function that accepts the following parameters:
+
+1. The operator we want to use to combine the list elements =⊕=
+2. An initial accumulator value =acc=
+
+Before implementing it, let's analyze its signature:
+
+#+BEGIN_SRC haskell
+  foldl' :: (b -> a -> b) -> b -> ([a] -> b)
+#+END_SRC
+
+That means: foldl' will receive a function (the operator) as its first parameter, and the
+accumulator as its second parameter, notice how the type of the accumulator =b= lines up with the
+type of the first param of the operator =b=: the operator receives as its first parameter the
+previously computed accumulator so they must have the same type =b=, then, it receives as the
+second param a value from the list which have type =a=, since the result of the operator function
+becomes the new accumulator, it has to be of type =b=. Finally, foldl' returns a function =[a] ->
+b= that turns a list into another value or data structure where its type is the same as the type of
+the accumulator =b=.
+
+Now for the foldl' implementation:
+
+#+BEGIN_SRC haskell
+  foldl' :: (b -> a -> b) -> b -> [a] -> b
+  foldl' op acc = f acc
+      where f acc [] = acc
+            f acc (x:xs) = f (acc `op` x) xs
+#+END_SRC
+
+As you can notice we are doing exactly the same we did when defining the =and=, =or= and =sum=
+functions but we have got to a generalization that allows us to re-implement those functions just
+as:
+
+#+BEGIN_SRC haskell
+  and'' = foldl (&&) True
+
+  or'' = foldl (||) False
+
+  sum'' = foldl (+) 0
+#+END_SRC
+
+Visually, applying a foldl to a list is the same as replacing the cons operator of the list =:=
+with our own operator:
+
+#+BEGIN_SRC text
+  1:2:3:4:5:[] → acc⊕1⊕2⊕3⊕4⊕5
+#+END_SRC
+
+One consequence of that reasoning is that is usually convenient to choose the accumulator =acc= to
+be the /identity/ for the operator =⊕=.
+
+** Foldr
+
+What foldr does is abstract the following recursive equation:
+
+#+BEGIN_SRC text
+  f []     = v
+  f (x:xs) = x ⊕ (f xs)
+#+END_SRC
+
+Let's see some functions implemented using it:
+
+#+BEGIN_SRC haskell
+  and' :: [Bool] -> Bool
+  and' [] = True
+  and' (x:xs) = x && and' xs
+
+  or' :: [Bool] -> Bool
+  or' [] = False
+  or' (x:xs) = x || or' xs
+
+  sum' :: Num a => [a] -> a
+  sum' [] = 0
+  sum' (x:xs) = x + sum' xs
+#+END_SRC
+
+as you can see, here we're also repeating us a lot, let's do the same we did for foldl. In order to
+abstract that pattern in one function we need a function that accepts the following parameters:
+
+1. The operator we want to use to combine the list elements =⊕=
+2. A wildcard value to use when there are no more elements in the list =0=, =True=, =False=
+
+Before implementing it, let's analyze its signature:
+
+#+BEGIN_SRC haskell
+  foldr' :: (a -> b -> b) -> b -> ([a] -> b)
+#+END_SRC
+
+That means: foldr' will receive a function (the operator) as its first parameter, and the wildcard
+valud as its second parameter, notice how the type of the wildcard =b= lines up with the type of
+the *second* (in foldl was the first) param of the operator =b=: the operator receives as its first
+param the head of the list of type =a= and the wildcard as its second param =b= and must return a
+value of type =b= since this is what we are stating with first equation in the recursive
+definition. Finally, foldr' returns a function =[a] -> b= that turns a list into another value or
+data structure where its type is the same as the type of the wildcard =b=. This is as first sight,
+the same foldl did!
+
+Now for the foldr' implementation:
+
+#+BEGIN_SRC haskell
+  foldr' :: (a -> b -> b) -> b -> [a] -> b
+  foldr' op wc = f
+      where f [] = wc
+            f (x:xs) = x `op` f xs
+#+END_SRC
+
+As you can notice we are doing exactly the same we did when defining the =and=, =or= and =sum=
+functions but we have got to a generalization that allows us to re-implement those functions just
+as:
+
+#+BEGIN_SRC haskell
+  and'' = foldr (&&) True
+
+  or'' = foldr (||) False
+
+  sum'' = foldr (+) 0
+#+END_SRC
+
+Visually, applying a foldr to a list is the same as replacing the cons operator of the list =:=
+with our own operator:
+
+#+BEGIN_SRC text
+  1:2:3:4:5:[] → 1⊕2⊕3⊕4⊕5⊕wc
+#+END_SRC
+
+One consequence of that reasoning is that is usually convenient to choose the wildcard =wc= to
+be the /identity/ for the operator =⊕=.
+
+** Comparison between foldl and foldr
+
+As you could see foldl and foldr are different abstractions though very similar at the same time,
+actually the key difference (aside of the suttle difference between the operators signature)
+resides in that in lazy evaluation, foldr is able to work on infinite lists since the combining
+operation occurs outside of the recursive call as opposed to foldl where the entire combining
+operation occurs inside the recursive call and all of it is delayed in the presence of non-strict
+order of evaluation.
+
+foldr evaluation order:
+#+BEGIN_SRC text
+  1⊕(2⊕(3⊕(4⊕(5⊕(wc)))))
+#+END_SRC
+
+in contrast with foldl evaluation order:
+#+BEGIN_SRC text
+  ((((acc⊕1)⊕2)⊕3)⊕4)⊕5
+#+END_SRC
+
+which illustrates how is impossible to obtain intermediate values until you get to the end of the
+lists (and infinite lists don't have an end).
+
+Foldl and foldr can be implemented one in terms of the other in strict order, but in non-strict
+order only foldl can be implemented in terms of foldr by turning each element if a function that
+returns another function and so on until the final function that returns the result (delaying the
+whole evaluation until the entire list is consumed).
+
+turning foldr into foldl:
+#+BEGIN_SRC text
+  1⊕(2⊕(3⊕(acc)))
+
+  (step 1 (step 2 (step 3 id))) acc
+
+  Where step is:
+
+  step = \x f acc -> f (acc ⊕ x)
+#+END_SRC
+
+Finally we get the definition of foldl in terms of foldr:
+
+#+BEGIN_SRC haskell
+  foldl' :: (b -> a -> b) -> b -> [a] -> b
+  foldl' op acc xs = (foldr step id xs) acc
+      where step = \x f acc -> f (acc `op` x)
+#+END_SRC
+
+Notice how the step function is partially applied in each recursive call of foldr so when the final
+resulting function is provided with =acc= the value travels through all the composed partially
+applied functions.
+
+#+BEGIN_SRC text
+  (step 1 (step 2 (step 3 id))) acc
+
+  ↓
+
+  (step 1 (step 2 (\acc -> id (acc ⊕ 3)))) acc
+
+  ↓
+
+  (step 1 (\acc -> (\acc -> id (acc ⊕ 3)) (acc ⊕ 2))) acc
+
+  ↓
+
+  (\acc -> (\acc -> (\acc -> id (acc ⊕ 3)) (acc ⊕ 2)) (acc ⊕ 1)) acc
+#+END_SRC
