@@ -1,25 +1,30 @@
---------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid (mappend)
-import           Hakyll
+import Data.Monoid (mappend)
+import Hakyll
 
+config :: Configuration
+config = defaultConfiguration { deployCommand = deployCmd
+                              , providerDirectory = "src/"}
 
---------------------------------------------------------------------------------
+deployCmd :: String
+deployCmd = "rsync --checksum -ave 'ssh' --delete _site/* calisto:anler.me"
+
 main :: IO ()
-main = hakyll $ do
-    match "images/*" $ do
-        route   idRoute
-        compile copyFileCompiler
+main = hakyllWith config $ do
+    match "images/*" (route idRoute >> compile copyFileCompiler)
+    match "css/*" (route idRoute >> compile compressCssCompiler)
 
-    match "css/*" $ do
-        route   idRoute
-        compile compressCssCompiler
+    match "static/*" $ do
+      route $ composeRoutes (gsubRoute "static/" (const "")) idRoute
+      compile copyFileCompiler
 
-    match (fromList ["about.md"]) $ do
-        route   $ setExtension "html"
-        compile $ pandocCompiler
-            >>= loadAndApplyTemplate "templates/default.html" defaultContext
-            >>= relativizeUrls
+    match (fromList ["pages/about.org"]) $ do
+      route $ composeRoutes
+        (gsubRoute "pages/" (const ""))
+        (setExtension "html")
+      compile $ pandocCompiler
+        >>= loadAndApplyTemplate "templates/default.html" defaultContext
+        >>= relativizeUrls
 
     match "posts/*" $ do
         route $ setExtension "html"
@@ -60,7 +65,6 @@ main = hakyll $ do
     match "templates/*" $ compile templateCompiler
 
 
---------------------------------------------------------------------------------
 postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" `mappend`
