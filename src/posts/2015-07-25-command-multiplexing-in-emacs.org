@@ -4,7 +4,7 @@ title: Command multiplexing in Emacs
 
 ** A little digression
 
-I remember that when i switched to emacs, my vim colleagues were constantly pointing out the strong point about vim: modal editing. After some time using Emacs, I reply back: What the heck! Emacs has modal editing too! Emacs is a modal editor, any mode in emacs can denote de semantics of the keys at will, that's how you get so well integrated modes such as [[http://magit.vc/][Magit]].
+I remember that when I switched to emacs, my Vim colleagues were constantly pointing out the strong point about Vim: modal editing. After some time using Emacs, I reply back: What the heck! Emacs has modal editing too! Emacs is a modal editor, any mode in emacs can denote the semantics of the keys at will, that's how you get so well integrated modes such as [[http://magit.vc/][Magit]].
 
 ** Multiplexing instead of overriding
 
@@ -54,4 +54,4 @@ where my-kill-buffer-and-file and my-rename-buffer-and-file looks like this:
       (rename-buffer newname :unique)))
 #+END_SRC
 
-Clean I simple! I'm looking for more keybindings to easily augment thanks to mykie.
+Clean I simple! I'm looking for more keybindings to easily augment, thanks to mykie.

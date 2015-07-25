@@ -61,13 +61,13 @@ Now, let's see the implementation of foldr:
   foldr ⊕ v []     = v
 #+END_SRC
 
-What conclusions we can get from it? Let's see:
+What conclusions do we can get from it? Let's see:
 
 - =foldr= is a recursive function.
 - =v= is used as the result when the list **is empty**.
 - =⊕= has to be a binary function (an operator), that's what =a -> b -> b= means.
 - =⊕= first parameter is of type =a= so it has to be an element of the list because the list has type =[a]=.
-- =⊕= second parameter is of type =b= so it has to be =v= because that's the type of =v=, also, moreover its result is also of type =b= which is telling us that the result is used as a new =v=.
+- =⊕= second parameter is of type =b= so it has to be =v= because that's the type of =v=, moreover, its result is also of type =b= which is telling us that the result is used as a new =v=.
 
 Our examples have something else in common, let's first see what's the definition of a *monoid*:
 
@@ -125,11 +125,10 @@ so they both have the *same* type. This guides us to what is called the *first d
 
 #+BEGIN_SRC text
   foldl ⊕ v xs = foldr ⊕ v xs
-
   whenever ⊕ and v form a monoid and xs is a finite list.
 #+END_SRC
 
-So our example functions, =sum= and =product=, can be implemented using any of the two because of the *first duality theorem* and whenever this is the case using =foldl= is going to result in more efficient solution since its algorithm is /tail recursive/.
+So our example functions, =sum= and =product=, can be implemented using any of the two because of the *first duality theorem*, and whenever this is the case, using =foldl= is going to result in a more efficient solution since its algorithm is /tail recursive/.
 ** Remarks
 
 - The /Fold you so/ expression is taken from the amazing book [[http://learnyouahaskell.com/][Learn You a Haskell for Great Good]]
