@@ -7,7 +7,7 @@ config = defaultConfiguration { deployCommand = deployCmd
                               , providerDirectory = "src/"}
 
 deployCmd :: String
-deployCmd = "rsync --checksum -ave 'ssh' --delete _site/* calisto:anler.me"
+deployCmd = "./site build && rsync --checksum -ave 'ssh' --delete _site/* calisto:anler.me"
 
 main :: IO ()
 main = hakyllWith config $ do
