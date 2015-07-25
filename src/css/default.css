@@ -100,7 +100,7 @@ ul, ol {
     margin: 0 0 20px;
 }
 code, pre {
-    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+    font: 400 16px/1.1 Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 p > code {
     color: #d14;
@@ -112,7 +112,7 @@ p > code:before, p > code:after {
 pre {
     display: block;
     margin: 0 0 14px;
-    padding: 15px;
+    padding: 10px;
     font-size: 18px;
     line-height: 28px;
     overflow-x: auto;
