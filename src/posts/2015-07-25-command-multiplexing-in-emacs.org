@@ -54,4 +54,4 @@ where my-kill-buffer-and-file and my-rename-buffer-and-file looks like this:
       (rename-buffer newname :unique)))
 #+END_SRC
 
-Clean I simple! I'm looking for more keybindings to easily augment, thanks to mykie.
+Clean and simple! I'm looking for more keybindings to easily augment, thanks to mykie.

@@ -100,7 +100,7 @@ ul, ol {
     margin: 0 0 20px;
 }
 code, pre {
-    font: 400 16px/1.1 Menlo, Monaco, Consolas, "Courier New", monospace;
+    font: 400 16px/1.1 Menlo, Monaco, Consolas, "Fantasque Sans Mono", "DejaVu Sans Mono", "Courier New", monospace;
 }
 p > code {
     color: #d14;
