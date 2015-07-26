@@ -24,7 +24,8 @@ I use =C-x k= to kill a buffer, and =C-c r= to rename it, now, whenever I prefix
     :C-u     my-rename-buffer-and-file)
 #+END_SRC
 
-where my-kill-buffer-and-file and my-rename-buffer-and-file looks like this:
+where =my-kill-buffer-and-file= and =my-rename-buffer-and-file= look like this:
+
 #+BEGIN_SRC emacs-lisp
   (defun my-kill-buffer-and-file (&optional buffer-or-name)
     "Kill BUFFER-OR-NAME and its associated file.
@@ -48,10 +49,8 @@ where my-kill-buffer-and-file and my-rename-buffer-and-file looks like this:
             (newfilename (read-string "Rename file (to new name): " newname)))
        (list newname newfilename)))
     (let ((ask-if-exists 1))
-      (rename-file (buffer-file-name (current-buffer))
-                   newfilename
-                   ask-if-exists)
-      (rename-buffer newname :unique)))
+      (rename-file (buffer-file-name) newfilename ask-if-exists)
+      (set-visited-file-name newfilename :no-query :along-with-file)))
 #+END_SRC
 
 Clean and simple! I'm looking for more keybindings to easily augment, thanks to mykie.
