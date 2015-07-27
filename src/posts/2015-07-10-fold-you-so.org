@@ -19,18 +19,18 @@ Depending on how the operation is grouped when traversing the list there are two
 Let's start with the simplest one and take a look to the following functions:
 
 #+BEGIN_SRC haskell
+  sum' xs = head xs + sum' (tail xs)
   sum' [] = 0
-  sum' (x:xs) = x + sum' xs
 
+  product' xs = head xs * product' (tail xs)
   product' [] = 1
-  product' (x:xs) = x * product' xs
 #+END_SRC
 
 Can you spot a common pattern in those functions? Can you spot the differences with this:
 
 #+BEGIN_SRC haskell
-  f []     = v
-  f (x:xs) = x ⊕ (f xs)
+  f xs = head xs ⊕ f (tail xs)
+  f [] = v
 #+END_SRC
 
 Correct! there are no differences! So, wouldn't be nice that we abstracted the previous functions pattern? Well, we can do that with the function *foldr*:
@@ -45,6 +45,7 @@ Visually, applying foldr to a list looks like this:
   foldr ⊕ v [x1, x2, ..., xn] = x1 ⊕ (x2 ⊕ (...(xn ⊕ v)...))
 #+END_SRC
 
+now you should have a clue on why it is called =foldr= because it groups the operations to the right.
 Using it, we can re-implement the above functions in this way:
 
 #+BEGIN_SRC haskell
@@ -53,18 +54,18 @@ Using it, we can re-implement the above functions in this way:
   product' = foldr (*) 1
 #+END_SRC
 
-Now, let's see the implementation of foldr:
+Now, let's see the implementation of foldr along with its type signature:
 
 #+BEGIN_SRC haskell
   foldr :: (a -> b -> b) -> b -> [a] -> b
-  foldr ⊕ v (x:xs) = x ⊕ (foldr ⊕ v xs)
-  foldr ⊕ v []     = v
+  foldr ⊕ v xs = head xs ⊕ (foldr ⊕ v (tail xs))
+  foldr ⊕ v [] = v
 #+END_SRC
 
 What conclusions do we can get from it? Let's see:
 
 - =foldr= is a recursive function.
-- =v= is used as the result when the list **is empty**.
+- =v= is used as the result when the list *is empty*.
 - =⊕= has to be a binary function (an operator), that's what =a -> b -> b= means.
 - =⊕= first parameter is of type =a= so it has to be an element of the list because the list has type =[a]=.
 - =⊕= second parameter is of type =b= so it has to be =v= because that's the type of =v=, moreover, its result is also of type =b= which is telling us that the result is used as a new =v=.
@@ -77,56 +78,51 @@ In abstract algebra, a branch of mathematics, a monoid is an algebraic structure
 
 In our examples =(+)= is an associative operation and =0= it's its identity element, so they form a monoid. The same happens with =(*)= and =1=.
 
-Knowing that we can state the following:
+whenever =⊕= and =v= forms a monoid, we can state =foldr= will have the type:
 
-#+BEGIN_SRC text
+#+BEGIN_SRC haskell
   foldr :: (a -> a -> a) -> a -> [a] -> a
-  foldr ⊕ v []                = v
-  foldr ⊕ v [x1, x2, ..., xn] = x1 ⊕ (x2 ⊕ (...(xn-1 ⊕ xn)...))
 #+END_SRC
-
-whenever =⊕= and =v= forms a monoid.
 
 ** Foldl
 
 We already know about =foldr= and we know it groups the operation to the right, so let's define a =foldl= that instead groups the operation to the left:
 
 #+BEGIN_SRC text
-  foldl ⊕ []                = v
   foldl ⊕ [x1, x2, ..., xn] = ((...(v ⊕ xn)...⊕ x2) ⊕ x1)
+  foldl ⊕ []                = v
 #+END_SRC
 
 The recursive pattern abstracted by =foldl= looks like this:
 
 #+BEGIN_SRC text
-  f v []     = v
-  f v (x:xs) = f (v ⊕ x) xs
+  f v xs = f (v ⊕ head xs) (tail xs)
+  f v [] = v
 #+END_SRC
 
-So its implementation must be:
+So its implementation along with its type signature must be:
 
 #+BEGIN_SRC haskell
   foldl :: (b -> a -> b) -> b -> [a] -> b
-  foldl ⊕ v (x:xs) = foldl ⊕ (v⊕x) xs
-  foldl ⊕ v []     = v
+  foldl ⊕ v xs = foldl ⊕ (v ⊕ head xs) (tail xs)
+  foldl ⊕ v [] = v
 #+END_SRC
 
 ** Similarities between foldr and foldl
 
-As you have seen =foldr= and =foldl= functions are very similar, in fact, as with =foldr=, when =⊕= and =v= form a monoid we can state that:
+As you have seen =foldr= and =foldl= functions are very similar, in fact, as with =foldr=, when =⊕= and =v= form a monoid we can state its type will be:
 
-#+BEGIN_SRC text
+#+BEGIN_SRC haskell
   foldl :: (a -> a -> a) -> a -> [a] -> a
-  foldl ⊕ v []                = v
-  foldl ⊕ v [x1, x2, ..., xn] = (((...(x1 ⊕ x2) ...) ⊕ xn-1) ⊕ xn)
 #+END_SRC
 
-so they both have the *same* type. This guides us to what is called the *first duality theorem* between =foldr= and =foldl=:
+so in the presence of a monoid =foldr= and =foldl= have both the *same* type. This guides us to what is called the *first duality theorem*:
 
 #+BEGIN_SRC text
   foldl ⊕ v xs = foldr ⊕ v xs
-  whenever ⊕ and v form a monoid and xs is a finite list.
 #+END_SRC
+
+whenever =⊕= and =v= form a monoid and =xs= is a finite list.
 
 So our example functions, =sum= and =product=, can be implemented using any of the two because of the *first duality theorem*, and whenever this is the case, using =foldl= is going to result in a more efficient solution since its algorithm is /tail recursive/.
 ** Remarks
