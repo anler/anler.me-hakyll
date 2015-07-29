@@ -131,6 +131,9 @@ img {
     margin: 0;
     border-radius: 5px;
 }
+footer img {
+    display: inline;
+}
 a {
     font-weight: inherit;
     line-height: inherit;
