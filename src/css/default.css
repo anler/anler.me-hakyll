@@ -202,7 +202,6 @@ body {
     clear: both;
 }
 
-/* post */
 article {
     position: relative;
 }
@@ -213,22 +212,25 @@ article:after {
 article img {
     max-width: 100%;
 }
-article li {
-    list-style: none outside none;
+#content li {
+    list-style: none;
+    position: relative;
 }
-article ul > li:before {
+#content ul > li:before {
     content: "- ";
-    margin-left: -1.25em;
+    position: absolute;
+    left: -1.25em;
     color: #ccc;
 }
-article ol {
+#content ol {
     counter-reset: o-list;
 }
-article ol > li:before {
+#content ol > li:before {
     content: counter(o-list) ") ";
     counter-increment: o-list;
-    margin-left: -1.85em;
+    left: -1.85em;
     color: #ccc;
+    position: absolute;
 }
 
 /* special for li in pre */
