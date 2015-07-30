@@ -197,6 +197,10 @@ body {
     content: "\00B7 \00a0";
     color: #ccc;
 }
+/* content */
+#content {
+    clear: both;
+}
 
 /* post */
 article {
@@ -310,6 +314,7 @@ footer {
     text-align: center;
     font-size: 15px;
     color: #999;
+    clear: both;
 }
 footer > p {
     margin: 0;
