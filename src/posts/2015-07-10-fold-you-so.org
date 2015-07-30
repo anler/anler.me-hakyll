@@ -78,7 +78,7 @@ In abstract algebra, a branch of mathematics, a monoid is an algebraic structure
 
 In our examples =(+)= is an associative operation and =0= it's its identity element, so they form a monoid. The same happens with =(*)= and =1=.
 
-whenever =⊕= and =v= forms a monoid, we can state =foldr= will have the type:
+whenever =⊕= and =v= form a monoid, we can state =foldr= will have the type:
 
 #+BEGIN_SRC haskell
   foldr :: (a -> a -> a) -> a -> [a] -> a
