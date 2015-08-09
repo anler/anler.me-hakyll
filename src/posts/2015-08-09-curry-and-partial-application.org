@@ -1,0 +1,109 @@
+---
+title: Curry and Partial Application. Know the difference!
+---
+
+** The problem
+
+I've seen people referring to partial application as /currying/, specially people in the Groovy community since in that language the function used for partial application is named *curry*.
+
+Partial application in action using Groovy:
+
+#+BEGIN_SRC groovy
+  def addition = {a, b -> a + b}  // function of two arguments
+  def addTwo = addition.curry(2)  // fix first argument
+  println addTwo(2)               // result: 4
+#+END_SRC
+
+The problem strikes at line: =addition.curry(2)= where it's calling *curry* to the operation of *partial application*.
+
+Let's read the definitions of each of them.
+
+** Partial application.
+
+#+BEGIN_QUOTE
+In computer science, partial application (or partial function application) refers to the process of fixing a number of arguments to a function, producing another function of smaller arity.
+
+Given a function:
+
+\scriptstyle f \colon (X \times Y \times Z) \to N
+
+we might fix (or 'bind') the first argument, producing a function of type:
+
+\scriptstyle\text{partial}(f) \colon (Y \times Z) \to N
+
+Evaluation of this function might be represented as f_{partial}(y, z) instead of the original function f(x, y, z).
+
+-- Wikipedia
+#+END_QUOTE
+
+** Currying
+
+#+BEGIN_QUOTE
+Given a function f of type:
+
+\scriptstyle f \colon (X \times Y) \to Z
+
+currying it makes a function curry(f) of type:
+
+\scriptstyle \text{curry}(f) \colon X \to (Y \to Z)
+
+That is, \scriptstyle \text{curry}(f) takes an argument of type \scriptstyle X and returns a function of type \scriptstyle Y \to Z .
+
+-- Wikipedia
+#+END_QUOTE
+
+** Both side by side
+
+So, partial application can be seen as a higher-order function that receives a function with some arguments and returns a function with those arguments fixed, let's pretend it's type is something like:
+
+#+BEGIN_SRC text
+  partial :: NAryFunction -> [Argument] -> NAryFunction
+#+END_SRC
+
+So looking at it from the typed point of view we can state that partial application of an n-ary function is another n-ary function with =length [Argument]= less arguments.
+
+On the other hand currying can be seen as a higher-order function that receives an n-ary function and returns an unary function, let's pretend it's type is something like:
+
+#+BEGIN_SRC text
+  curry :: NAryFunction -> UnaryFunction
+#+END_SRC
+
+So as you can see from their type signatures, they are completely different!
+
+** The beauty of Haskell
+
+One of the things I like more from Haskell is its syntax, which is funny because I used to hate it and favor Lisp syntax (or lack of it :P). But thanks to Haskell syntax you can treat everything as a function and everything is arranged so well that makes the use of partial application and currying completely transparent. Take for example the following:
+
+#+BEGIN_SRC haskell
+  -- we create a binary (arity 2) function
+  addition a b = a + b
+
+  -- we create a monadic (arity 1) function out of a binary function
+  -- by fixing its first argument
+  addTwo = addition 2
+
+  -- we create a nullary (arity 0) function out of a monadic function
+  -- by fixing its argument. You can see this as a constant!
+  four = addTwo 2
+
+  show four -- result: "4"
+#+END_SRC
+
+As we can see, in Haskell we can see every expression as returning a function that produces the result when evaluated, and since evaluating a function doesn't require any special syntax, it makes functional programming a breeze. This is contrary to what we see in other languages where functions and values are clearly separated and there is special syntax for evaluating a function. Take for example the same snippet of code in JavaScript:
+
+#+BEGIN_SRC javascript
+  let addition = (a, b) => a + b,
+      addTwo   = addition.bind(null, 2),
+      four     = addTwo.bind(null, 2);
+
+  console.log(four);    // result: function ()
+  console.log(four());  // result: 4
+#+END_SRC
+
+Here you see that =four= the function is clearly separated from =four()= the value, this in my opinion makes functional programming hmm... less... declarative? well, of course it's not surprise, since most languages doing this (including Lisp) are imperative.
+
+** Some drops of history
+
+The name /Currying/ was given by [[https://en.wikipedia.org/wiki/Christopher_Strachey][Christopher Strachey]] as a reference to [[https://en.wikipedia.org/wiki/Haskell_Curry][Haskell Brooks Curry]], an American logician known for his work in combinatory logic.
+
+The /currying/ technique was actually invented by [[https://en.wikipedia.org/wiki/Moses_Sch%25C3%25B6nfinkel][Moses Schönfinkel]], a Russian logician who was the /inventor/ of combinatory logic, and it was a simplification to the work done in combinatory logic and lambda calculus that states that functions of two or more arguments can be replaced by functions taking just one argument.
