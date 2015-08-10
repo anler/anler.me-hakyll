@@ -57,50 +57,83 @@ That is, \scriptstyle \text{curry}(f) takes an argument of type \scriptstyle X a
 So, partial application can be seen as a higher-order function that receives a function with some arguments and returns a function with those arguments fixed, let's pretend it's type is something like:
 
 #+BEGIN_SRC text
-  partial :: NAryFunction -> [Argument] -> NAryFunction
+  partial: NAryFunction → [Argument] → NAryFunction
 #+END_SRC
 
-So looking at it from the typed point of view we can state that partial application of an n-ary function is another n-ary function with =length [Argument]= less arguments.
+looking at it from the typed point of view we can state that partial application of an n-ary function is another n-ary function with =length [Argument]= less arguments.
 
 On the other hand currying can be seen as a higher-order function that receives an n-ary function and returns an unary function, let's pretend it's type is something like:
 
 #+BEGIN_SRC text
-  curry :: NAryFunction -> UnaryFunction
+  curry :: NAryFunction → UnaryFunction1 → UnaryFunction2 → ... → UnaryFunctionN
 #+END_SRC
 
-So as you can see from their type signatures, they are completely different!
+So it transforms a multi-argument function in a function of one argument that returns another function of one argument and so on until all the arguments are supplied. Another way of looking at it is as serie of nested closures:
+
+#+BEGIN_SRC javascript
+  // JavaScript
+  function(a) {
+      return function(b) {
+          return function(c) {
+              return a + b + c;
+          };
+      };
+  }
+
+  // Or in modern JavaScript
+  (a) => (b) => (c) => a + b + c;
+#+END_SRC
+
+So as you can see from their *pretended* type signatures, they are completely different!
+
+Generally what we found in most languages is partial application and in the face of partial application currying is probably not needed because is akward to use in most imperative languages (because of the repeated function-calling syntax), take for example this snippet of JavaScript:
+
+#+BEGIN_SRC javascript
+  //
+  // curry and partial are fictional functions
+  //
+  let addition        = (a, b) => a + b,
+      additionCurried = curry(addition);
+
+  // with partial application you can do more than one thing
+  // that is, you can fix how many arguments you need.
+  let addTwo = partial(addition, 2),
+      four   = partial(addition, 2, 2);
+
+  // with currying on the other hand you have only one way
+  // which is give the function an argument at a time.
+  let addTwo = additionCurried(2),
+      four   = additionCurried(2)(2);
+#+END_SRC
+
+See it from this point of view, a function =f= can be partially applied using two techniques:
+
+1. Partially apply the function directly: =partial(f, [args...])=
+2. Curryfy the function: =curry(f)= which obligates you to supply the rest of the arguments one-by-one
+
+In most languages the first option is preferred because syntactically looks better and lets you fix more than one argument at a time.
 
 ** The beauty of Haskell
 
-One of the things I like more from Haskell is its syntax, which is funny because I used to hate it and favor Lisp syntax (or lack of it :P). But thanks to Haskell syntax you can treat everything as a function and everything is arranged so well that makes the use of partial application and currying completely transparent. Take for example the following:
+One of the things I like most from Haskell is its syntax, which is funny because I used to hate it and favor Lisp syntax (or lack of it :P). Haskell doesn't have partial application, but currified functions, but thanks to Haskell syntax where function evaluation doesn't need any special notation the use of curried functions looks just as partial application. Take for example the following:
 
 #+BEGIN_SRC haskell
-  -- we create a binary (arity 2) function
   addition a b = a + b
 
-  -- we create a monadic (arity 1) function out of a binary function
-  -- by fixing its first argument
   addTwo = addition 2
 
-  -- we create a nullary (arity 0) function out of a monadic function
-  -- by fixing its argument. You can see this as a constant!
-  four = addTwo 2
-
-  show four -- result: "4"
+  four = addition 2 2
 #+END_SRC
 
-As we can see, in Haskell we can see every expression as returning a function that produces the result when evaluated, and since evaluating a function doesn't require any special syntax, it makes functional programming a breeze. This is contrary to what we see in other languages where functions and values are clearly separated and there is special syntax for evaluating a function. Take for example the same snippet of code in JavaScript:
+I want you to pay special attention to this line ~four = addition 2 2~, here =four= is a curried function that cannot receive more than one argument at a time, but with Haskell's syntax that's transparent, it looks just as partial application, what's really happening though is that Haskell sees that expression as =(addition 2) 2=, in other words, it calls =addition= with the argument =2= and calls again its result =(addition 2)= with the argument =2=. This is contrary to what we see in other languages where functions and values are clearly separated and there is special syntax for evaluating a function. Take for example the same snippet of code in JavaScript:
 
 #+BEGIN_SRC javascript
-  let addition = (a, b) => a + b,
-      addTwo   = addition.bind(null, 2),
-      four     = addTwo.bind(null, 2);
-
-  console.log(four);    // result: function ()
-  console.log(four());  // result: 4
+  let addition = curry((a, b) => a + b),
+      addTwo   = addition(2),
+      four     = addition(2)(2);
 #+END_SRC
 
-Here you see that =four= the function is clearly separated from =four()= the value, this in my opinion makes functional programming hmm... less... declarative? well, of course it's not surprise, since most languages doing this (including Lisp) are imperative.
+Here you see that since =four= is curried we are obligated to give it all its arguments one-by-one and because of JavaScript's syntax the process looks kind of awkard =addition(2)(2)= compared to partial application =partial(addition, 2, 2)=.
 
 ** Some drops of history
 
