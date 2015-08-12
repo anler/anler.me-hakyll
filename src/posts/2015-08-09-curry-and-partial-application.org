@@ -125,7 +125,7 @@ One of the things I like most from Haskell is its syntax, which is funny because
   four = addition 2 2
 #+END_SRC
 
-I want you to pay special attention to this line ~four = addition 2 2~, here =four= is a curried function that cannot receive more than one argument at a time, but with Haskell's syntax that's transparent, it looks just as partial application, what's really happening though is that Haskell sees that expression as =(addition 2) 2=, in other words, it calls =addition= with the argument =2= and calls again its result =(addition 2)= with the argument =2=. This is contrary to what we see in other languages where functions and values are clearly separated and there is special syntax for evaluating a function. Take for example the same snippet of code in JavaScript:
+I want you to pay special attention to this line ~four = addition 2 2~, here =addition= is a curried function that cannot receive more than one argument at a time, but with Haskell's syntax that's transparent, it looks just as partial application, what's really happening though is that Haskell sees that expression as =(addition 2) 2=, in other words, it calls =addition= with the argument =2= and calls again its result =(addition 2)= with the argument =2=. This is contrary to what we see in other languages where functions and values are clearly separated and there is special syntax for evaluating a function. Take for example the same snippet of code in JavaScript:
 
 #+BEGIN_SRC javascript
   let addition = curry((a, b) => a + b),
