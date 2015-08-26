@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
-import Data.Monoid (mappend)
-import Hakyll
+import           Data.Monoid (mappend)
+import           Hakyll
 
 config :: Configuration
 config = defaultConfiguration { deployCommand = deployCmd
@@ -12,6 +12,7 @@ deployCmd = "./site build && rsync --checksum -ave 'ssh' --delete _site/* calist
 main :: IO ()
 main = hakyllWith config $ do
     match "images/*" (route idRoute >> compile copyFileCompiler)
+    match "fonts/*" (route idRoute >> compile copyFileCompiler)
     match "css/*" (route idRoute >> compile compressCssCompiler)
 
     match "static/*" $ do
@@ -27,6 +28,13 @@ main = hakyllWith config $ do
         >>= relativizeUrls
 
     match "posts/*" $ do
+        route $ setExtension "html"
+        compile $ pandocCompiler
+            >>= loadAndApplyTemplate "templates/post.html"    postCtx
+            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= relativizeUrls
+
+    match "drafts/*" $ do
         route $ setExtension "html"
         compile $ pandocCompiler
             >>= loadAndApplyTemplate "templates/post.html"    postCtx

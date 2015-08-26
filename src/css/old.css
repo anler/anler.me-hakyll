@@ -1,0 +1,370 @@
+/******************************************************
+ * I copied these styles from markdotto.com, who is
+ * the creator of bootstrap, and I also did some
+ * modification. Thanks Mark for the beautiful theme,
+ * so I reserved the @mdo sign below.
+ *****************************************************/
+
+/*
+  __
+  __                  /\ \
+  /'_`\_    ___ ___    \_\ \    ___
+  /'/'_` \ /' __` __`\  /'_` \  / __`\
+  /\ \ \L\ \/\ \/\ \/\ \/\ \L\ \/\ \L\ \
+  \ \ `\__,_\ \_\ \_\ \_\ \___,_\ \____/
+  \ `\_____\\/_/\/_/\/_/\/__,_ /\/___/
+  `\/_____/
+
+*/
+
+
+
+/* Body resets
+   -------------------------------------------------- */
+
+* {
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+}
+html {
+    font-size: 62.5%;
+}
+body {
+    padding: 20px;
+    font-family: Menlo, Monaco, monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #666;
+    background-color: #fff;
+}
+p {
+    margin: 0 0 20px;
+}
+h1, h2, h3 {
+    font: 400 28px/1.1 'Bree Serif', Georgia, serif;
+    position: relative;
+    margin: 30px 0 20px;
+    color: #111;
+    text-rendering: optimizeLegibility;
+}
+
+h1:before, h2:before, h3:before {
+    position: absolute;
+    top: auto;
+    color: #ccc;
+    display: none;
+}
+h1:before {
+    content: "*";
+    left: -1.25em;
+}
+h2:before {
+    content: "**";
+    left: -2em;
+}
+h3:before {
+    content: "***";
+    left: -2.5em;
+}
+i, em, b, strong {
+    padding-left: .1em;
+    padding-right: .1em;
+}
+b, strong {
+    font-weight: bold;
+    color: #333;
+}
+b:before, b:after, strong:before, strong:after {
+    content: "*";
+}
+i:before, i:after, em:before, em:after {
+    content: "/";
+}
+hr {
+    margin: 0;
+    border: 0;
+}
+hr:after {
+    display: block;
+    margin: 20px 0;
+    content: "----------------------------------------------------------------";
+    color: #ccc;
+}
+ul, ol {
+    padding: 0;
+    margin: 0 0 20px;
+}
+code, pre {
+    font: 400 16px/1.1 Menlo, Monaco, Consolas, "Fantasque Sans Mono", "DejaVu Sans Mono", "Courier New", monospace;
+}
+p > code {
+    color: #d14;
+}
+p > code:before, p > code:after {
+    content: "=";
+    color: #ccc;
+}
+pre {
+    display: block;
+    margin: 0 0 14px;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 28px;
+    overflow-x: auto;
+}
+blockquote {
+    padding: 0 0 0 20px;
+    margin: 0 30px 20px -22.5px;
+    color: #999;
+    border-left: 8px solid #e5e5e5;
+}
+blockquote p:last-child {
+    margin-bottom: 0;
+}
+img {
+    display: block;
+    margin: 0;
+    border-radius: 5px;
+}
+footer img {
+    display: inline;
+}
+a {
+    font-weight: inherit;
+    line-height: inherit;
+    color: #000;
+    text-decoration: none;
+}
+sup a:before {
+    content: "[";
+}
+sup a:after {
+    content: "]";
+}
+a:hover {
+    text-decoration: underline;
+}
+table {
+    line-height: 2.5;
+    margin-bottom: 15px;
+    max-width: 100%;
+    width: 100%;
+}
+table td, table th {
+    padding: 0 15px;
+}
+table th.left, table td.left {
+    text-align: left;
+}
+table th.right, table td.right {
+    text-align: right;
+}
+
+/******************************************************/
+/* body */
+body {
+    font: 400 14px/1.6 'Open Sans', Verdana, Helvetica, sans-serif;
+    margin: 0 auto;
+    max-width: 770px;
+}
+/* head */
+#header {
+    float: right;
+    font: 400 24px/1.1 'Bree Serif', Georgia, serif;
+    color: #888;
+}
+#header:after {
+    display: block;
+    margin: 10px 0;
+    color: #ccc;
+}
+#header a {
+    color: #333;
+}
+#header ul {
+    list-style: none;
+}
+#header li {
+    display: inline-block;
+}
+#header li + li:before {
+    display: inline-block;
+    content: "\00B7 \00a0";
+    color: #ccc;
+}
+/* content */
+#content {
+    clear: both;
+}
+
+article {
+    position: relative;
+}
+article:after {
+    display: block;
+    color: #ccc;
+}
+article img {
+    max-width: 100%;
+}
+#content li {
+    list-style: none;
+    position: relative;
+}
+#content ul > li:before {
+    content: "- ";
+    position: absolute;
+    left: -1.25em;
+    color: #ccc;
+}
+#content ol {
+    counter-reset: o-list;
+}
+#content ol > li:before {
+    content: counter(o-list) ") ";
+    counter-increment: o-list;
+    left: -1.85em;
+    color: #ccc;
+    position: absolute;
+}
+
+/* special for li in pre */
+article pre li {
+    list-style-type: decimal;
+}
+
+article pre li:before {
+    display: none;
+}
+
+/* meta info */
+article-info {
+    display: inline-block;
+    margin: -10px 0 -10px;
+    color: #999;
+}
+article-info + article-info:before {
+    content: "\2223 \00a0";
+}
+article-meta:after {
+    content: "----------------------------------------------------------------";
+    display: block;
+    margin-top: -1px;
+    color: #ccc;
+}
+
+/* table of content */
+#table-of-contents {
+    position: fixed;
+    right: 0em;
+    top: 0em;
+    border:1px solid #e1e1e8;
+    -webkit-box-shadow: 0 0 1em #777777;
+    -moz-box-shadow: 0 0 1em #777777;
+    -webkit-border-bottom-left-radius: 5px;
+    -moz-border-radius-bottomleft: 5px;
+    text-align: right;
+    /* ensure doesn't flow off the screen when expanded */
+    max-height: 80%;
+    overflow: auto;
+    z-index: 200;
+}
+
+#table-of-contents h2 {
+    max-width: 20em;
+    font-weight: normal;
+    padding-left: 0.5em;
+    padding-top: 0.05em;
+    padding-bottom: 0.05em;
+}
+
+#table-of-contents ul {
+    margin-left: 14pt;
+    margin-bottom: 10pt;
+    padding: 0
+}
+
+#table-of-contents li {
+    padding: 0;
+    margin: 1px;
+    list-style: none;
+}
+
+#table-of-contents ul>:first-child {
+    color: blue;
+}
+
+#table-of-contents #text-table-of-contents {
+    display: none;
+    text-align: left;
+}
+
+#table-of-contents:hover #text-table-of-contents {
+    display: block;
+    padding: 0.5em;
+    margin-top: -1.5em;
+}
+
+/* footer */
+footer {
+    margin: 80px 0 0;
+    text-align: center;
+    font-size: 15px;
+    color: #999;
+    clear: both;
+}
+footer > p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Responsive
+   -------------------------------------------------- */
+
+@media (min-width: 768px) {
+    /* Increase body padding and font-sizes */
+    body {
+        padding: 30px;
+        font-size: 18px;
+        line-height: 1.75;
+    }
+    h1:before, h2:before, h3:before {
+        display: inline;
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        padding: 30px;
+    }
+}
+
+
+/* Generated by pandoc. */
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode, table.sourceCode pre
+   { margin: 0; padding: 0; border: 0; vertical-align: baseline; border: none; }
+td.lineNumbers { border-right: 1px solid #AAAAAA; text-align: right; color: #AAAAAA; padding-right: 5px; padding-left: 5px; }
+td.sourceCode { padding-left: 5px; }
+.sourceCode span.kw { color: #007020; font-weight: bold; }
+.sourceCode span.dt { color: #902000; }
+.sourceCode span.dv { color: #40a070; }
+.sourceCode span.bn { color: #40a070; }
+.sourceCode span.fl { color: #40a070; }
+.sourceCode span.ch { color: #4070a0; }
+.sourceCode span.st { color: #4070a0; }
+.sourceCode span.co { color: #60a0b0; font-style: italic; }
+.sourceCode span.ot { color: #007020; }
+.sourceCode span.al { color: red; font-weight: bold; }
+.sourceCode span.fu { color: #06287e; }
+.sourceCode span.re { }
+.sourceCode span.er { color: red; font-weight: bold; }
+
+
+.twitter-share-button {
+    float: right;
+}
