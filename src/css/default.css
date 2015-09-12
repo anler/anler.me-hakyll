@@ -1,46 +1,48 @@
 * {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box
 }
 
 body {
-    font-family: "Computer Modern Serif";
-    color: black;
-    font-size: 18px;
+  font-family: "Computer Modern Serif";
+  color: black;
+  font-size: 18px;
+  width: 700px;
+  margin: 0 auto;
 }
 
 #header {
-    width: 100%;
-    text-align: center;
+  width: 100%;
+  text-align: center;
 }
 
 #header ul {
-    list-style: none;
+  list-style: none;
 }
 #header li {
-    display: inline-block;
+  display: inline-block;
 }
 #header li + li:before {
-    display: inline-block;
-    content: "\00B7 \00a0";
-    color: #ccc;
+  display: inline-block;
+  content: "\00B7 \00a0";
+  color: #ccc;
 }
 
 #content {
-    clear: both;
+  clear: both;
 }
 
 footer {
-    margin: 80px 0 0;
-    text-align: center;
-    font-size: 70%;
-    color: black;
-    clear: both;
+  margin: 80px 0 0;
+  text-align: center;
+  font-size: 70%;
+  color: black;
+  clear: both;
 }
 footer > p {
-    margin: 0;
-    line-height: 1.5;
+  margin: 0;
+  line-height: 1.5;
 }
 
 h1 { font-size: 24px; }
@@ -48,59 +50,58 @@ h2 { font-size: 20px; }
 h3, h4, h5 { font-size: 18px; }
 
 pre {
-    display: block;
-    margin: 0;
-    padding: 10px;
-    line-height: 28px;
-    overflow-x: auto;
+  display: block;
+  margin: 0;
+  padding: 10px;
+  overflow-x: auto;
 }
 blockquote {
-    padding: 0 0 0 20px;
-    margin: 0 30px 20px -8px;
-    border-left: 8px solid black;
+  padding: 0 0 0 20px;
+  margin: 0 30px 20px -8px;
+  border-left: 8px solid black;
 }
 blockquote p:last-child {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 p.post-info { font-style: italic; }
 
 /* mobile: 21em */
 @media all and (min-width: 21em) { 
-	
-    pre {
-	font-size: 75%;
-	margin-left: 0px;
-    }
-    
-    p code {
-	font-size: 85%;
-    }
+  
+  pre {
+    font-size: 75%;
+    margin-left: 0px;
+  }
+  
+  p code {
+    font-size: 85%;
+  }
 
-    img {
-	width: 350px;
-    }
+  img {
+    width: 350px;
+  }
 
-    img.small {
-	width: 280px;
-    }
+  img.small {
+    width: 280px;
+  }
 
 
 }
 
 /* browser: 90em*/
 @media all and (min-width: 80em) {
-    body {
-	width: 700px;
-	margin: 0 auto;
-    }
-    pre {
-	font-size: 80%;
-    }
+  body {
+    width: 700px;
+    margin: 0 auto;
+  }
+  pre {
+    font-size: 80%;
+  }
 
-    p > code {
-	font-size: 95%;
-    }
+  p > code {
+    font-size: 95%;
+  }
 
 
 }

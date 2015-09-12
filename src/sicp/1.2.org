@@ -1,0 +1,22 @@
+---
+title: SICP: Exercise 1.2
+---
+
+Thanslate the following expression into prefix form:
+
+\begin{equation}
+\frac{5 + 4 + (2 - (3 - (6 + \frac{4}{5})))}{3(6 - 2)(2 - 7)}
+\end{equation}
+
+* Solution
+
+#+BEGIN_SRC scheme
+  (/ (+ 5
+        4
+        (- 2 (- 3 (+ 6 (/ 4 5)))))
+     (* 3
+        (- 6 2)
+        (- 7 2)))
+#+END_SRC
+
+Result is -0.24666666666666667.

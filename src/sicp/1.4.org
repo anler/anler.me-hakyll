@@ -1,0 +1,64 @@
+---
+title: SICP: Exercise 1.4
+---
+
+Observe that our model of evaluation allows for combinations whose operators are compound expressions. Use this observation to describe the behavior of the following procedure.
+
+#+BEGIN_SRC scheme
+  (define (a-plus-abs-b a b)
+    ((if (> b 0) + -) a b))
+#+END_SRC
+
+* Solution
+Since in our model of evaluation (applicative) the rules are:
+
+1. Evaluate the first element to obtain a procedure.
+2. Evaluate the rest of the elements and bind each result to the corresponding procedure argument.
+3. Apply the procedure to the arguments.
+
+The behavior of the procedure would be:
+
+#+BEGIN_SRC scheme
+  (a-plus-abs-b a b)
+
+  ;; → obtain the procedure a-plus-abs-b
+
+  ((define (a-plus-abs-b a b)
+      ((if (> b 0) + -) a b)) a b)
+
+  ;; → evaluate the rest of the elements to obtain the arguments,
+  ;;   pretend the values are a' and b'
+
+  ((define (a-plus-abs-b a b)
+      ((if (> b 0) + -) a b)) a' b')
+
+  ;; → apply the procedure to the arguments
+
+  ((if (> b' 0) + -) a' b')
+
+  ;; → we start again, obtain the procedure
+
+  ;; → in case b' > 0 is true we return the procedure defined by +
+
+    (<+ procedure> a' b')
+
+  ;;   → a' and b' evaluate to themselves since they are already values
+
+    (<+ procedure> a' b')
+
+  ;;   → and by applying <+ procedure> to a' and b' we obtain
+
+    <the value representing the sum of a' b'>
+
+  ;; → in case b' > 0 is false we return the procedure defined by -
+
+    (<- procedure> a' b')
+
+  ;;   → a' and b' evaluate to themselves since they are already values
+
+    (<- procedure> a' b')
+
+  ;;   → and by applying <- procedure> to a' and b' we obtain
+
+    <the value representing the difference of a' b'>
+#+END_SRC

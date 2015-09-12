@@ -1,6 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
-import           Data.Monoid (mappend)
 import           Hakyll
+import qualified Data.Set as S
+import           Text.Pandoc.Options
 
 config :: Configuration
 config = defaultConfiguration { deployCommand = deployCmd
@@ -19,13 +20,20 @@ main = hakyllWith config $ do
       route $ composeRoutes (gsubRoute "static/" (const "")) idRoute
       compile copyFileCompiler
 
-    match (fromList ["pages/about.org"]) $ do
+    match "pages/*" $ do
       route $ composeRoutes
         (gsubRoute "pages/" (const ""))
         (setExtension "html")
       compile $ pandocCompiler
         >>= loadAndApplyTemplate "templates/default.html" defaultContext
         >>= relativizeUrls
+
+    match "sicp/*" $ do
+        route $ setExtension "html"
+        compile $ pandocMathCompiler
+            >>= loadAndApplyTemplate "templates/sicp.html"    postCtx
+            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= relativizeUrls
 
     match "posts/*" $ do
         route $ setExtension "html"
@@ -77,3 +85,15 @@ postCtx :: Context String
 postCtx =
     dateField "date" "%B %e, %Y" `mappend`
     defaultContext
+
+pandocMathCompiler =
+  let mathExtensions = [Ext_tex_math_dollars,
+                        Ext_tex_math_double_backslash,
+                        Ext_latex_macros]
+      defaultExtensions = writerExtensions defaultHakyllWriterOptions
+      newExtensions = foldr S.insert defaultExtensions mathExtensions
+      writerOptions = defaultHakyllWriterOptions {
+        writerExtensions = newExtensions,
+        writerHTMLMathMethod = MathJax ""
+        }
+  in pandocCompilerWith defaultHakyllReaderOptions writerOptions

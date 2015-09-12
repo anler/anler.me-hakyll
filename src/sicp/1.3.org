@@ -1,0 +1,43 @@
+---
+title: SICP: Exercise 1.3
+---
+
+Define a procedure that takes three numbers as arguments and returns the sum of the squares of the two larger numbers.
+
+* Solution
+** scheme
+#+BEGIN_SRC scheme
+  (define (largest-two-numbers-square-sum a b c)
+    (if (= a (largest a b))
+        (square-sum a (largest b c))
+        (square-sum b (largest a c))))
+
+  (define (largest a b)
+    (if (> a b)
+        a
+        b))
+
+  (define (square-sum a b)
+    (+ (square a)
+       (square b)))
+
+  (define (square a)
+    (* a a))
+#+END_SRC
+
+** haskell
+#+BEGIN_SRC haskell
+  largestTwoNumbersSquareSum a b c = if largest a b == a then
+                                       squareSum a (largest b c)
+                                     else
+                                       squareSum b (largest a c)
+
+  largest a b = if a > b then
+                  a
+                else
+                  b
+
+  squareSum a b = square a + square b
+
+  square a = a * a
+#+END_SRC

@@ -1,0 +1,64 @@
+---
+title: SICP: Exercise 1.5
+---
+
+Ben Bitdiddle has invented a test to determine whether the interpreter he is faced with is using applicative-order evaluation or normal-order evaluation. He defines the following two procedures:
+
+#+BEGIN_SRC scheme
+  (define (p) (p))
+
+  (define (test x y)
+    (if (= x 0)
+        0
+        y))
+#+END_SRC
+
+Then he evaluates the expression
+
+#+BEGIN_SRC scheme
+  (test 0 (p))
+#+END_SRC
+
+What behavior will Ben observe with an interpreter that uses applicative-order evaluation? What behavior will he observe with an interpreter that uses normal-order evaluation? Explain your answer. (Assume that the evaluation rule for the special form *if* is the same whether the interpreter is using normal or applicative order: The predicate expression is evaluated first, and the result determines whether to evaluate the consequent or the alternative expression.)
+
+* Solution
+In case of normal-order: =(test 0 (p)) → 0= since =(p)= is not evaluated until needed.
+#+BEGIN_SRC scheme
+  (test 0 (p))
+  ;; →
+  ((lambda (x y)
+    (if (= x 0)
+      0
+      y))
+   0 (p))
+  ;; →
+  (if (= 0 0)
+    0
+    (p))
+  ;; →
+  0
+#+END_SRC
+
+In case of applicative-order: =(test 0 (p))= never terminates since =(p)= is infinitely expanded to itself. Following the evaluation rules =test= is not being even called.
+#+BEGIN_SRC scheme
+  (test 0 (p))
+  ;; →
+  ((lambda (x y)
+    (if (= x 0)
+      0
+      y))
+   0 (p))
+  ;; →
+  ((lambda (x y)
+    (if (= x 0)
+      0
+      y))
+   0 (p))
+  ;; →
+  ((lambda (x y)
+    (if (= x 0)
+      0
+      y))
+   0 (p))
+  ;; → and on and on...
+#+END_SRC
