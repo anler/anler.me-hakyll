@@ -5,7 +5,14 @@ title: SICP: Exercise 1.3
 Define a procedure that takes three numbers as arguments and returns the sum of the squares of the two larger numbers.
 
 * Solution
-** scheme
+Believe it or not, this problem was kind of hard for me, I saw this and the first thing it came to my mind was: gather the three numbers in a list, sort it, and sum the squares of the first two elements of the list. This solution works but is too bloated to such a simple problem! So the *right* solution is just to notice this:
+
+We have three numbers: x, y and z.
+We see if one of the numbers is larger that the same number compared to another number, say: x == largest x y.
+If it's *true*, then x is one of the largest numbers, so the other one is: largest y z.
+If it's *false*, then y is one of the largest numbers, so the other one is: largest x y.
+
+Solution using scheme:
 #+BEGIN_SRC scheme
   (define (largest-two-numbers-square-sum a b c)
     (if (= a (largest a b))
@@ -25,19 +32,16 @@ Define a procedure that takes three numbers as arguments and returns the sum of 
     (* a a))
 #+END_SRC
 
-** haskell
+Solution using haskell:
 #+BEGIN_SRC haskell
-  largestTwoNumbersSquareSum a b c = if largest a b == a then
-                                       squareSum a (largest b c)
-                                     else
-                                       squareSum b (largest a c)
+  largestTwoNumbersSquareSum a b c
+    | a == largest a b = squareSum a (largest b c)
+    | otherwise        = squareSum b (largest a c)
 
-  largest a b = if a > b then
-                  a
-                else
-                  b
+  largest a b | a > b     = a
+              | otherwise = b
 
   squareSum a b = square a + square b
 
-  square a = a * a
+  square a      = a * a
 #+END_SRC

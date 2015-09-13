@@ -75,7 +75,7 @@ p.post-info { font-style: italic; }
   }
   
   p code {
-    font-size: 85%;
+    font-size: 65%;
   }
 
   img {
@@ -100,7 +100,7 @@ p.post-info { font-style: italic; }
   }
 
   p > code {
-    font-size: 95%;
+    font-size: 65%;
   }
 
 
