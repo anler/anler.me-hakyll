@@ -1,0 +1,88 @@
+---
+title: SICP: Exercise 1.6
+---
+
+Alyssa P. Hacker doesn't see why *if* needs to be provided as a special form.
+"Why can't I just define it as an ordinary procedure in terms of cond?" she asks.
+Alyssa's friend Eva Lu Ator claims this can indeed be done, and she defines a new version of *if*:
+
+#+BEGIN_SRC scheme
+  (define (new-if predicate then-clause else-clause)
+    (cond (predicate then-clause)
+          (else else-clause)))
+#+END_SRC
+
+Eva demonstrates the program for Alyssa:
+#+BEGIN_SRC scheme
+  (new-if (= 2 3) 0 5)
+  ;; 5
+
+  (new-if (= 1 1) 0 5)
+  ;; 0
+#+END_SRC
+
+Delighted, Alyssa uses =new-if= to rewrite the square-root program:
+#+BEGIN_SRC scheme
+  (define (sqrt-iter guess x)
+    (new-if (good-enough? guess x)
+            guess
+            (sqrt-iter (improve guess x)
+                       x)))
+#+END_SRC
+
+what happens when Alyssa attempts to use this to compute square roots? Explain.
+
+* Solution
+What happens is that the procedure won't give an answer(it's type is ⊥). That's because our newly defined =new-if= isn't an special form, in other words, the applicative-order rules we know are applied to it.
+
+Let's remember those rules.
+
+In order to evaluate the expression =(new-if (good-enough? guess x) guess (sqrt-iter ...))= first the procedure bound to =new-if= must be obtained, that's ok, next, the rest of the elements must be evaluated to obtain the arguments to bound to the procedure params, ok, let's see =(good-enough? guess x)= yields a boolean value that's going to be used later inside the procedure, moving on, =guess= also yields a value for later use inside the procedure, great, now the time has come for =(sqrt-iter ...)= which yields the value... hmmm, it seems we don't know which value until we start all over again, but even in that case the same question will arise and that's because its value is *undefined*, we got stuck in an /infinite loop/ when evaluating the recursive call.
+
+Let's use substitution to see what's really happening.
+
+#+BEGIN_SRC scheme
+  (new-if (good-enough? guess x)
+          guess
+          (sqrt-iter (improve guess x) x))
+
+  ;; expands into
+
+  (new-if (good-enough? guess x)
+          guess
+          (new-if (good-enough? (improve guess) x)
+                  (improve guess)
+                  (sqrt-iter (improve (improve guess) x) x)))
+
+  ;; which in turs expands into
+
+  (new-if (good-enough? guess x)
+          guess
+          (new-if (good-enough? (improve guess) x)
+                  (improve guess)
+                  (new-if (good-enough? (improve (improve guess)) x)
+                          (improve (improve guess))
+                          (sqrt-iter (improve (improve (improve guess)))
+                                     x))))
+
+  ;; and again, and again, and again...
+#+END_SRC
+
+In languages that follow normal-order evaluation instead, such as Haskell, the example given by Eva is perfectly valid because the procedure arguments are only evaluated when needed.
+
+#+BEGIN_SRC haskell
+  newIf p x y | p = x
+              | otherwise = y
+
+  sqrtIter g x = newIf (goodEnough g x)
+                 g
+                 (sqrtIter g' x)
+    where g' = improve g x
+
+  goodEnough g x = abs (x' - x) < 0.001
+    where x' = g^2
+
+  improve g x = (g + x / g) / 2
+
+  sqrtIter 1 9 = 3.00009155413138
+#+END_SRC
