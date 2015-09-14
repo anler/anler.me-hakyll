@@ -10,13 +10,22 @@ Thanslate the following expression into prefix form:
 
 * Solution
 
+Prefix notation in scheme.
 #+BEGIN_SRC scheme
-  (/ (+ 5
-        4
-        (- 2 (- 3 (+ 6 (/ 4 5)))))
-     (* 3
-        (- 6 2)
-        (- 7 2)))
+  (define solution (/ (+ 5
+                         4
+                         (- 2 (- 3 (+ 6 (/ 4 5)))))
+                      (* 3
+                         (- 6 2)
+                         (- 7 2))))
 #+END_SRC
 
+And the same solution in Haskell, although using prefix notation in Haskell /all the time/ is more than awkward.
+#+BEGIN_SRC haskell
+  solution =
+    (/)
+    ((+) ((+) 5 4) ((-) 2 ((-) 3 ((+) 6 ((/) 4 5)))))
+    ((*) ((*) 3 ((-) 6 2)) ((-) 2 7))
+
+#+END_SRC
 Result is -0.24666666666666667.
