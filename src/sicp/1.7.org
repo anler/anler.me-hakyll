@@ -1,0 +1,98 @@
+---
+title: SICP: Exercise 1.7
+---
+
+The =good-enough?= test used in computing square roots will not be very effective for finding the square roots of very small numbers. Also, in real computers, arithmetic operations are almost performed with limited precision. This makes our test inadequate for very large numbers. Explain these statements, with examples showing how the test fails for small and large numbers. An alternative strategy for implementing =good-enough?= is to watch how =guess= changes from one iteration to the next and to stop when the change is a very small fraction of the guess. Design a square-root procedure that uses this kind of end test. Does this works better for small and large numbers?
+
+#+BEGIN_SRC scheme
+  (define (good-enough? g x)
+    (< (abs (- (square g) x))
+       0.0001))
+#+END_SRC
+
+* Solution
+
+#+BEGIN_QUOTE
+The =good-enough?= test used in computing square roots will not be very effective for finding the square roots of very small numbers.
+#+END_QUOTE
+
+Is talking about /very small numbers/ and it looks like it's true that, the smaller the numbers being involved the less effective the procedure is since the bigger becomes the error tolerance. For example:
+
+~sqrt 1.6e-6~ gives the answer ~8e-7~ but a calculator gives ~1.2649110640673518e-3~.
+
+Let's do another exercise:
+#+BEGIN_SRC text
+  1 - 1e-4
+  = 0.9999
+
+  0.9999 fits in 1     1.00010001 times
+
+
+  1e-3 - 1e-4
+  = 9e-4
+
+  9e-4 fits in 1e-3    1.11111111111 times
+
+
+  2e-4 - 1e-4
+  = 1e-4
+
+  1e-4 fits in 2e-4     2 times
+#+END_SRC
+
+This means that the smaller a number is, the bigger the /damage/ the error tolerance we are using causes, it becomes bigger and bigger compared to that number hence disturbing more and more the accuracy of the result of the square root procedure. We could of course choose an even smaller error tolerance, but again we face the same problem if the numbers involved are even smaller, so we must find a better solution.
+
+#+BEGIN_QUOTE
+Also, in real computers, arithmetic operations are almost performed with limited precision. This makes our test inadequate for very large numbers.
+#+END_QUOTE
+
+For the answer of this I tried manually a lot of really big numbers but I was always getting a correct solution, until I find a wrong example: ~(square 1e36)~ is ~1.0000000000000001e+72~ instead of just ~1e72~ in my 64-bit Intel machine, the result of ~(- (square 1e36) 1e72)~ is ~1.9615942923083377e+56~, that is, i-lost-the-count-how-many times bigger than ~0.0001~ so it's impossible that our test works for this example even when it tries with the real square root.
+
+My conclusion about this is that when computing the square of some integer numbers, a small error is introduced. We could happily live with that small error I think, but in the presence of really big integers, that error is just too big, at least for our procedure being involved.
+
+
+#+BEGIN_QUOTE
+An alternative strategy for implementing =good-enough?= is to watch how =guess= changes from one iteration to the next and to stop when the change is a very small fraction of the guess. Design a square-root procedure that uses this kind of end test.
+#+END_QUOTE
+
+Solution using Scheme:
+#+BEGIN_SRC scheme
+  (define (good-enough? guess new-guess)
+    (< (abs (- guess new-guess))
+       0.0001))
+
+  (define (improve guess x)
+    (average guess
+             (/ x guess)))
+
+  (define (sqrt-iter guess x)
+    (let ((improved-guess (improve guess x)))
+      (if (good-enough? guess improved-guess)
+        improved-guess
+        (sqrt-iter improved-guess
+                   x))))
+
+  (define (sqrt x)
+    (sqrt-iter (/ x 2)
+               x))
+#+END_SRC
+
+Solution using Haskell:
+#+BEGIN_SRC haskell
+  goodEnough g g' = abs (g - g') < 0.001
+
+  improve g x = (g + x / g) / 2
+
+  sqrt' x = sqrtIter g x
+    where g = x/2
+
+  sqrtIter g x | goodEnough g g' = g'
+               | otherwise = sqrtIter g' x
+    where g' = improve g x
+#+END_SRC
+
+#+BEGIN_QUOTE
+Does this works better for small and large numbers?
+#+END_QUOTE
+
+With the proposed solution, first, we don't have the problem of comparing the difference of very small numbers with our error tolerance, problem #1 solved! second, we don't even use the =square= procedure that as we saw introduced some funky results in our solution, problem #2 checked!, so yes, I think it does.

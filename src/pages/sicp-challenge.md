@@ -12,4 +12,4 @@ Let's get started!
 
 # Chapter 1 - Building Abstractions with Procedures
 
-[Ex 1.1](/sicp/1.1.html), [Ex 1.2](/sicp/1.2.html), [Ex 1.3](/sicp/1.3.html), [Ex 1.4](/sicp/1.4.html), [Ex 1.5](/sicp/1.5.html), [Ex 1.6](/sicp/1.6.html)
+[Ex 1.1](/sicp/1.1.html), [Ex 1.2](/sicp/1.2.html), [Ex 1.3](/sicp/1.3.html), [Ex 1.4](/sicp/1.4.html), [Ex 1.5](/sicp/1.5.html), [Ex 1.6](/sicp/1.6.html), [Ex 1.7](/sicp/1.7.html)
