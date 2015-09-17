@@ -1,0 +1,350 @@
+---
+title: Recursion aerobics (The applicative Y-combinator)
+---
+
+This post is more an exercise for me than anything else (any of my posts are?), I want to be able to logically deduce the Y-combinator. If you don't know what it is just keep reading, but be adviced, there are explanations done by smarter people that you should be aware of, [[https://www.youtube.com/watch?v%3DFITJMJjASUs][Y-Not talk by Jim Weirich]] and [[https://mitpress.mit.edu/books/little-schemer][Daniel P. Friedman's book The Little Schemer]] comes to mind.
+
+I first knew about the Y-combinator while reading Paul Graham's paper [[http://languagelog.ldc.upenn.edu/myl/ldc/llog/jmc.pdf][The Roots of Lisp]], there he said that Lisp's primitive =labels= wasn't technically necessary since you can implement recursive functions by means of the Y-combinator, and that's what I'm going to try to derive here, I'm going to make an anonymous function recursive.
+
+Let's take as an example the function =factorial=, which equation looks like this:
+
+\begin{equation}
+factorial(n)=\begin{cases}1 &\mbox{if } n = 0\\n * factorial(n-1) &\mbox{if } n > 0\end{cases}
+\end{equation}
+
+Here's how would we write that function in JavaScript.
+#+BEGIN_SRC javascript
+  function factorial(n) {
+    if (n === 0) {
+      return 1;
+    } else {
+      return n * factorial(n - 1);
+    }
+  }
+#+END_SRC
+
+Now, let's imagine we couldn't name our functions, that they all must be anonymous, our previous example will look like this.
+#+BEGIN_SRC javascript
+  function(n) {
+    if (n === 0) {
+      return 1;
+    } else {
+      return n * factorial(n - 1);
+    }
+  }
+#+END_SRC
+
+The only thing we can do with the previous function is calculate the factorial of zero since for =n>0= it will throw a ~ReferenceError~ because ~factorial~ is not defined, and this is where it becomes interesting! Let's try to make it work even without a name.
+
+Let's write a function that allow us to compute the factorial of =n= for =n ≤ 1=.
+#+BEGIN_SRC javascript
+  function(n) {
+    if (n === 0) {
+      return 1;
+    } else {
+      return n *
+        ((function(n) {
+          if (n === 0) {
+            return 1;
+          } else {
+            return n * factorial(n - 1);
+          }
+        })(n - 1));
+    }
+  }
+#+END_SRC
+
+And again for =n ≤ 2=.
+#+BEGIN_SRC javascript
+  function(n) {
+    if (n === 0) {
+      return 1;
+    } else {
+      return n * (function(n) {
+        if (n === 0) {
+          return 1;
+        } else {
+          return n * (function(n) {
+            if (n === 0) {
+              return 1;
+            } else {
+              return n * factorial(n - 1);
+            }
+          })(n - 1);
+        }
+      })(n - 1);
+    }
+  }
+#+END_SRC
+
+As we can see, we keep needing one factorial function inside our factorial function, since we aren't allowed to *define* things (using for example: =var=, =const=, =let= etc.) the only way we have to make availabe a factorial function to our function is *using a parameter* (here we are taking advantage of the, /wrongly-named/, closure property).
+
+#+BEGIN_SRC javascript
+  function(factorial) {
+    return function (n) {
+      if (n === 0) {
+        return 1;
+      } else {
+        return n * factorial(n - 1);
+      }
+    };
+  }
+#+END_SRC
+
+But look, the function we just defined doesn't have a name, but if it could have one, it would be something like *makeFactorial* and it's a higher-order function, it takes a function a parameter, and returns the factorial function as the result. Actually, let's do one trick to ease our understanding of this, let's name our functions, and pretend we can't reference our named functions from inside them, we also change the name of the paramenter =factorial= to avoid being shadowed by our named factorial function, but keep in mind, for us ~factorial = fact~, and the same for the further down ~makeFactorial = makeFact~, this is just for us to not get lost in the /anonymous functions soup/.
+
+So, the previous example will look like this.
+#+BEGIN_SRC javascript
+  function makeFactorial(fact) {
+    return function factorial(n) {
+      if (n === 0) {
+        return 1;
+      } else {
+        return n * fact(n - 1);
+      }
+    };
+  }
+#+END_SRC
+
+A question arises, if our =makeFactorial= returns =factorial= but /also receives/ factorial, why don't we just return what we receive? It looks obvious doesn't it? Let's try.
+#+BEGIN_SRC javascript
+  (function makeFactorial(fact) {
+    return fact;
+  })(function factorial(n) {
+    if (n === 0) {
+      return 1;
+    } else {
+      return n * fact(n - 1);
+    }
+  });
+#+END_SRC
+
+But look, we just lost again the =fact= parameter in our factorial! This is confusing... Let's wrap it again in our factorial maker.
+#+BEGIN_SRC javascript
+  (function makeFactorial(fact) {
+    return fact;
+  })(
+    function makeFactorial(fact) {
+      return function factorial(n) {
+        if (n === 0) {
+          return 1;
+        } else {
+          return n * fact(n - 1);
+        }
+      };
+    });
+#+END_SRC
+
+#+BEGIN_QUOTE
+A side note: Look that we have two very-different functions named equally: *makeFactorial*, this is because even when they *look different* the *behave equally*, they both return a factorial function for example.
+#+END_QUOTE
+
+Better, but now =makeFactorial= *receives* makeFactorial, not factorial!? Let's change the parameter name.
+#+BEGIN_SRC javascript
+  (function makeFactorial(makeFact) {
+    return makeFact;
+  })(
+    function makeFactorial(fact) {
+      return function factorial(n) {
+        if (n === 0) {
+          return 1;
+        } else {
+          return n * fact(n - 1);
+        }
+      };
+    });
+#+END_SRC
+
+Good, but hmmm, one more thing, =makeFactorial= *must* return a =factorial=, not a =makeFactorial=, so... let's think about it... why don't we just invoke =makeFactorial= *with itself*? it typechecks in my head... after all, we cannot just pass it a =factorial= out of thin air right?, but we can pass it a constructor of a factorial, because of that of "teach a man how to fish" stuff you know? jokes apart, hello? that constructor is exactly our =makeFactorial=!
+#+BEGIN_SRC javascript
+  (function makeFactorial(makeFact) {
+    return makeFact(makeFact);
+  })(
+    function makeFactorial(fact) {
+      return function factorial(n) {
+        if (n === 0) {
+          return 1;
+        } else {
+          return n * fact(n - 1);
+        }
+      };
+    });
+#+END_SRC
+
+Oh my, but look, we also have to change the name of the =fact= parameter since is now =makeFactorial=, nicest thing? we can still use it to get our factorial and recurse.
+#+BEGIN_SRC javascript
+  (function makeFactorial(makeFact) {
+    return makeFact(makeFact);
+  })(
+    function makeFactorial(makeFact) {
+      return function factorial(n) {
+        if (n === 0) {
+          return 1;
+        } else {
+          return n * (makeFact(makeFact))(n - 1);
+        }
+      };
+    });
+#+END_SRC
+
+Girls, I think we have a winner, for simplicity let's bind the resulting function as =factorial= and try it with some input.
+
+#+BEGIN_SRC javascript
+  var factorial = (function makeFactorial(makeFact) {
+    return makeFact(makeFact);
+  })(
+    function makeFactorial(makeFact) {
+      return function factorial(n) {
+        if (n === 0) {
+          return 1;
+        } else {
+          return n * (makeFact(makeFact))(n - 1);
+        }
+      };
+    });
+
+  factorial(0);                   // 0
+  factorial(1);                   // 1
+  factorial(2);                   // 2
+  factorial(3);                   // 6
+#+END_SRC
+
+We just made recursion *out of thin air*, isn't this astonishing!?
+
+* The applicative Y-combinator
+
+What's left is refination, we certainly achieved recursion with anonymous functions, but if we had to repeat the same for each recursive function we need to define it would be very annoying.
+
+So, let's go back to our ideal case which is being able to use the factorial function as the real factorial function, not with some non-sense stuck in its guts.
+
+We *want* to use this:
+#+BEGIN_SRC javascript
+  function makeFactorial(fact) {
+    return function factorial(n) {
+      if (n === 0) {
+        return 1;
+      } else {
+        return n * fact(n - 1);
+      }
+    };
+  }
+#+END_SRC
+
+We *don't want* to use this:
+#+BEGIN_SRC javascript
+  function makeFactorial(makeFactorial) {
+    return function factorial(n) {
+      if (n === 0) {
+        return 1;
+      } else {
+        return n * (makeFactorial(makeFactorial))(n - 1);
+      }
+    };
+  }
+#+END_SRC
+
+So going back to our last working example, let's factor out the ugly =(makeFact(makeFact))(n)= part out of it. Notice that:
+
+\begin{equation}
+(makeFact(makeFact))(n) = fact(n) \rightarrow makeFact(makeFact) = fact
+\end{equation}
+
+#+BEGIN_SRC javascript
+  (function makeFactorial(makeFact) {
+    return makeFact(makeFact);
+  })(
+    function makeFactorial(makeFact) {
+      return (function makeFactorial(fact) {
+        return function factorial(n) {
+          if (n === 0) {
+            return 1;
+          } else {
+            return n * fact(n - 1);
+          }
+        }
+      })(makeFact(makeFact));
+    });
+#+END_SRC
+
+If you try that you'll be stuck in an infinite recursion loop, since in order to compute the result of =makeFactorial= you have to compute the result of =makeFact=, which is the same =makeFactorial= function! We need to introduce a bit of /laziness/, the way we achieve it is by wrapping our value in a function.
+
+As we've seen, the result of =makeFact(makeFact)= is =fact= which is a function that receives a number =n= and calculates its factorial. Let's ask a question, is =fact= equivalent to the following function?
+
+#+BEGIN_SRC javascript
+  function(n) { return fact(n); }
+#+END_SRC
+
+surely it is right? So let's replace =makeFact(makeFact)=, aka =fact=, with its lazy equivalent.
+
+#+BEGIN_SRC javascript
+  (function makeFactorial(makeFact) {
+    return makeFact(makeFact);
+  })(
+    function makeFactorial(makeFact) {
+      return (function makeFactorial(fact) {
+        return function factorial(n) {
+          if (n === 0) {
+            return 1;
+          } else {
+            return n * fact(n - 1);
+          }
+        };
+      })(
+        // this is the relevant part
+        function(n) { return (makeFact(makeFact))(n); }
+      );
+    }
+  )
+#+END_SRC
+
+Oh! Can you feel it? It's almost there! Our desired function is there completely *self-contained*, let's move it out from there by making yet another function that receives our function as a parameter.
+
+#+BEGIN_SRC javascript
+  function Y(f) {
+    return (function makeFactorial(makeFact) {
+      return makeFact(makeFact);
+    })(
+      function makeFactorial(makeFact) {
+        return (f)(function(n) {
+          return (makeFact(makeFact))(n);
+        });
+      }
+    );
+  }
+
+  var factorial = Y(function makeFactorial(fact) {
+    return function factorial(n) {
+      if (n === 0) {
+        return 1;
+      } else {
+        return n * fact(n - 1);
+      }
+    };
+  });
+
+  factorial(0);                   // 0
+  factorial(1);                   // 1
+  factorial(2);                   // 2
+  factorial(3);                   // 6
+#+END_SRC
+
+Oh man, we got it, we created the Y-combinator, a function that can be used to obtain recursion with anonymous functions. This function has anything to do with calculating factorials anymore, let's clean it by removing the names.
+
+This is the final result.
+#+BEGIN_SRC javascript
+  function Y(f) {
+    return (function(g) {
+      return g(g);
+    })(
+      function(g) {
+        return (f)(function(arg) {
+          return (g(g))(arg);
+        });
+      }
+    );
+  }
+#+END_SRC
+
+* Remarks
+
+There's more to this than what is told, and more rigorous math below of it. If you want to know more I recommend you to read the Wikipedia entry on [[https://en.wikipedia.org/wiki/Fixed-point_combinator][Fixed-point combinators]]. Also watch the talk I posted at the beginning, and buy or borrow a copy of The Little Schemer, it does a better job explaining it that's for sure! apart from being a great book for doing recursion aerobics.
