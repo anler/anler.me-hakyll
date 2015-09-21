@@ -1,5 +1,6 @@
 ---
 title: Recursion aerobics (The applicative Y-combinator)
+tags: functional programming, javascript
 ---
 
 This post is more an exercise for me than anything else (any of my posts are?), I want to be able to logically deduce the Y-combinator. If you don't know what it is just keep reading, but be adviced, there are explanations done by smarter people that you should be aware of, [[https://www.youtube.com/watch?v%3DFITJMJjASUs][Y-Not talk by Jim Weirich]] and [[https://mitpress.mit.edu/books/little-schemer][Daniel P. Friedman's book The Little Schemer]] comes to mind.

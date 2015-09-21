@@ -1,4 +1,8 @@
-<p class="post-info">Posted on $date$   $if(author)$ by $author$ $endif$</p>
+<p class="post-info">
+  Posted on $date$
+  $if(author)$<br>by $author$ $endif$
+  $if(tags)$<br> Tagged: $tags$  $endif$
+</p>
 
 <article>
   $body$

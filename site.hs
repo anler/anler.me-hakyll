@@ -35,12 +35,28 @@ main = hakyllWith config $ do
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
 
+    tags <- buildTags "posts/*" (fromCapture "tags/*.html")
+
     match "posts/*" $ do
         route $ setExtension "html"
         compile $ pandocMathCompiler
-            >>= loadAndApplyTemplate "templates/post.html"    postCtx
-            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= loadAndApplyTemplate "templates/post.html"    (postCtxWithTags tags)
+            >>= loadAndApplyTemplate "templates/default.html" (postCtxWithTags tags)
             >>= relativizeUrls
+
+    tagsRules tags $ \tag pattern -> do
+      let title = "Posts tagged \""++tag++"\""
+      route idRoute
+      compile $ do
+        posts <- recentFirst =<< loadAll pattern
+        let ctx = constField "title" title
+                  `mappend` listField "posts" postCtx (return posts)
+                  `mappend` defaultContext
+
+        makeItem ""
+          >>= loadAndApplyTemplate "templates/tag-list.html" ctx
+          >>= loadAndApplyTemplate "templates/default.html" ctx
+          >>= relativizeUrls
 
     match "drafts/*" $ do
         route $ setExtension "html"
@@ -97,3 +113,6 @@ pandocMathCompiler =
         writerHTMLMathMethod = MathJax ""
         }
   in pandocCompilerWith defaultHakyllReaderOptions writerOptions
+
+postCtxWithTags :: Tags -> Context String
+postCtxWithTags tags = tagsField "tags" tags `mappend` postCtx

@@ -1,5 +1,6 @@
 ---
 title: Curry and Partial Application. Know the difference!
+tags: functional programming, haskell
 ---
 
 ** The problem

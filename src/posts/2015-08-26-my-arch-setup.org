@@ -1,5 +1,6 @@
 ---
 title: My Arch Linux setup
+tags: arch linux
 ---
 
 This week I've moved from Fedora to Arch Linux mainly because no matter how hard I try, developing with Gnome is several times less efficient than developing with tiling window managers such as i3wm or xmonad. But why should I switch distros completely? Well, because of yaourt, Fedora's copr looks promising but yaourt have everything I need at my fingertips, even the bluejeans firefox plugin I have to use for my daily meetings.

@@ -1,5 +1,6 @@
 ---
 title: Fold you so
+tags: functional programming, haskell
 ---
 
 #+BEGIN_QUOTE

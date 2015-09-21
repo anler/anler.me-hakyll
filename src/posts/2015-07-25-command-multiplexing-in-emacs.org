@@ -1,5 +1,6 @@
 ---
 title: Command multiplexing in Emacs
+tags: emacs
 ---
 
 ** A little digression
