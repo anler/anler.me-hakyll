@@ -1,0 +1,49 @@
+---
+title: SICP: Exercise 1.8
+---
+
+Newton's method for cube roots is based on the fact that if ~y~ is an approximation to the cube root of ~x~, then a better approximation is given by the value
+
+\begin{equation}
+\frac{\frac{x}{y^2} + 2y}{3}
+\end{equation}
+
+Use this formula to implement a cube-root procedure analogous to the square-root procedure.
+
+* Solution
+Solution using Scheme:
+#+BEGIN_SRC scheme
+  (define (cube-root x)
+    (cube-root-iter (/ x 2) x))
+
+  (define (cube-root-iter guess x)
+    (let ((improved-guess (improve guess x)))
+      (if (good-enough? guess improved-guess)
+          improved-guess
+          (cube-root-iter improved-guess x))))
+
+  (define (good-enough? guess improved-guess)
+    (< (abs (- guess improved-guess))
+       0.0001))
+
+  (define (improve guess x)
+    (/ (+ (/ x (square guess))
+          (* 2 guess))
+       3))
+
+  (define (square x)
+    (* x x))
+#+END_SRC
+
+Solution using Haskell:
+#+BEGIN_SRC haskell
+  cubeRoot x = cubeRootIter (x / 2) x
+
+  cubeRootIter g x | goodEnough g g' = g'
+                   | otherwise = cubeRootIter g' x
+    where g' = improve g x
+
+  goodEnough g g' = abs (g - g') < 0.001
+
+  improve g x = (x/g^2 + 2*y) / 3
+#+END_SRC
