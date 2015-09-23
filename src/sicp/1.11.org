@@ -1,0 +1,65 @@
+---
+title: SICP: Exercise 1.11
+---
+
+A function =f= is defined by the rule that:
+
+\begin{equation}
+f(n) = \begin{cases}n &\mbox{if } n < 3\\f(n - 1) + 2f(n - 2) + 3f(n - 3) &\mbox{if } n >= 3\end{cases}
+\end{equation}
+
+Write a procedure that computes =f= by means of a recursive process.
+Write a procedure that computes =f= by means of an iterative process.
+
+* Solution
+** Recursive process
+Solution using Scheme:
+#+BEGIN_SRC scheme
+  (define (f n)
+    (cond ((< n 3) n)
+          (else (+ (* 1 (f (- n 1)))
+                   (* 2 (f (- n 2)))
+                   (* 3 (f (- n 3)))))))
+#+END_SRC
+
+Solution using Haskell:
+#+BEGIN_SRC haskell
+  f n | n < 3 = n
+      | otherwise = 1 * f (n - 1) +
+                    2 * f (n - 2) +
+                    3 * f (n - 3)
+#+END_SRC
+
+** Iterative process
+Solution using Scheme:
+#+BEGIN_SRC scheme
+  (define (f n)
+    (cond ((< n 3) n)
+          (else (f-iter n 3 2 1 0))))
+
+  (define (f-iter n count a b c)
+    (let ((new-a (+ a
+                    (* 2 b)
+                    (* 3 c)))
+          (new-b a)
+          (new-c b))
+      (if (< count n)
+          (f-iter n (+ 1 count) new-a new-b new-c)
+          new-a)))
+#+END_SRC
+
+Solution using Haskell:
+#+BEGIN_SRC haskell
+  f n | n < 3 = n
+      | otherwise = fIter n 3 2 1 0
+
+  fIter n count a b c =
+    let newA = a + 2*b + 3*c
+        newB = a
+        newC = b
+    in
+      if count < n then
+        fIter n (succ count) newA newB newC
+      else
+        newA
+#+END_SRC
