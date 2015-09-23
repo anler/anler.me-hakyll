@@ -1,0 +1,49 @@
+---
+title: SICP: Exercise 1.12
+---
+
+The following pattern of numbers is called /Pascal's triangle/.
+#+BEGIN_SRC text
+      1
+     1 1
+    1 2 1
+   1 3 3 1
+  1 4 6 4 1
+#+END_SRC
+
+The numbers at the edge of the triangle are all 1, and each number inside the triangle is the sum of the two numbers above it. Write a procedure that computes elements of Pascal's triangle by means of a recursive process.
+
+* Solution
+Solution using Scheme:
+#+BEGIN_SRC scheme
+  ;; col <= row always
+  ;; minimum col/row is 1
+  (define (pascal-triangle row col)
+    (cond ((or (= col 1)
+               (= row col))
+           1)
+          (else (+ (pascal-triangle (- row 1)
+                                    (- col 1))
+                   (pascal-triangle (- row 1)
+                                    col)))))
+#+END_SRC
+
+Solution using Haskell:
+#+BEGIN_SRC haskell
+  -- col <= row always
+  -- minimum col and row are 1
+  pascalTriangle row col | col == 1 || col == row = 1
+                         | otherwise = pascalTriangle (pred row) (pred col) +
+                                       pascalTriangle (pred row) col
+#+END_SRC
+
+Pascal triangle row generation using Haskell:
+#+BEGIN_SRC haskell
+  pascalRow n | n == 1    = [1]
+              | n == 2    = [1,1]
+              | otherwise = [1] ++ sumRow previousRow ++ [1]
+    where previousRow = pascalRow (n - 1)
+
+  sumRow (x:y:[]) = [x+y]
+  sumRow (x:y:rest) = x+y:sumRow (y:rest)
+#+END_SRC
