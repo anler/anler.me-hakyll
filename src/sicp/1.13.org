@@ -1,0 +1,255 @@
+---
+title: SICP: Exercise 1.13
+---
+
+Prove that =Fib(n)= is the closest integer to
+
+\begin{equation}
+\phi^n/{\sqrt 5}
+\end{equation}
+
+where
+\begin{equation}
+\phi = \frac{1 + \sqrt 5}{2}
+\end{equation}
+
+Hint: Let
+
+\begin{equation}
+\psi = \frac{1 - \sqrt 5}{2}
+\end{equation}
+
+Use induction and the definition of the Fibonacci numbers to prove that
+\begin{equation}
+Fib(n) = \frac{\phi^n - \psi^n}{\sqrt 5}
+\end{equation}
+
+* Solution
+
+Let's start by using induction to prove the proposed equation for =Fib(n)=.
+
+Proof by induction requires to steps:
+1. The base case. We need to prove =Fib(0)= holds.
+2. The inductive case. With the premis that =Fib(n)= holds, we need to prove that =Fib(n+1)= holds.
+
+This is the solution for 1.
+
+\begin{equation}
+Fib(0) = \frac{\phi^0 - \psi^0}{\sqrt 5}
+\end{equation}
+\begin{equation}
+0 = \frac{\phi^0 - \psi^0}{\sqrt 5}
+\end{equation}
+\begin{equation}
+0 = \frac{1 - 1}{\sqrt 5}
+\end{equation}
+\begin{equation}
+0 = \frac{0}{\sqrt 5}
+\end{equation}
+\begin{equation}
+0 = 0
+\end{equation}
+
+That is, we just proved it holds for the base case. Next comes the solution for 2.
+
+\begin{equation}
+Fib(n+1) = Fib(n-1) + Fib(n)
+\end{equation}
+
+We don't know what =Fib(n+1)= looks like, but we know what =Fib(n)= does so we are going to rephrase that equation as
+
+\begin{equation}
+Fib(n) = Fib(n+1) - Fib(n-1)
+\end{equation}
+
+And then do some algebra
+
+\begin{equation}
+\frac{\phi^n - \psi^n}{\sqrt 5} = \frac{\phi^{n+1} - \psi^{n+1}}{\sqrt 5} - (\frac{\phi^{n-1} - \psi^{n-1}}{\sqrt 5})
+\end{equation}
+
+\begin{equation}
+\frac{\phi^n - \psi^n}{\sqrt 5} = \frac{\phi^{n+1} - \psi^{n+1} -\phi^{n-1} + \psi^{n-1}}{\sqrt 5}
+\end{equation}
+
+Multiplying all the equation by √5 and reducing we obtain
+
+\begin{equation}
+\phi^n - \psi^n = \phi^n (\phi - \frac{1}{\phi}) - \psi^n (\psi - \frac{1}{\psi})
+\end{equation}
+
+In order to prove the equation above, it's enough to prove that
+
+\begin{equation}
+\phi - \frac{1}{\phi} = 1
+\end{equation}
+
+or
+
+\begin{equation}
+\phi^2 - 1 = \phi
+\end{equation}
+
+and that
+
+\begin{equation}
+\psi - \frac{1}{\psi} = 1
+\end{equation}
+
+or
+
+\begin{equation}
+\psi^2 - 1 = \psi
+\end{equation}
+
+First the ϕ case
+
+\begin{equation}
+\frac{1 + \sqrt 5}{2} - \frac{1}{\frac{1 + \sqrt 5}{2}} = 1
+\end{equation}
+
+\begin{equation}
+\frac{1 + \sqrt 5}{2} - \frac{2}{1 + \sqrt 5} = 1
+\end{equation}
+
+\begin{equation}
+\frac{(1 + \sqrt 5)^2 - 4}{2 + 2\sqrt 5} = 1
+\end{equation}
+
+\begin{equation}
+\frac{1 + 2\sqrt 5 + 5 - 4}{2 + 2\sqrt 5} = 1
+\end{equation}
+
+\begin{equation}
+\frac{2 + 2\sqrt 5}{2 + 2\sqrt 5} = 1
+\end{equation}
+
+\begin{equation}
+1 = 1
+\end{equation}
+
+Now the ᴪ case
+
+\begin{equation}
+\frac{1 - \sqrt 5}{2} - \frac{1}{\frac{1 - \sqrt 5}{2}} = 1
+\end{equation}
+
+\begin{equation}
+\frac{(1 - \sqrt 5)^2 - 4}{2 - 2\sqrt 5} = 1
+\end{equation}
+
+\begin{equation}
+\frac{1 - 2\sqrt 5 + 5 - 4}{2 - 2\sqrt 5} = 1
+\end{equation}
+
+\begin{equation}
+\frac{2 - 2\sqrt 5}{2 - 2\sqrt 5} = 1
+\end{equation}
+
+\begin{equation}
+1 = 1
+\end{equation}
+
+And with that we have proven that effectively
+
+\begin{equation}
+Fib(n) = \frac{\phi^n - \psi^n}{\sqrt 5}
+\end{equation}
+
+Now, returning to the first question that asked to prove that =Fib(n)= is the closest integer to
+
+\begin{equation}
+\phi^n/{\sqrt 5}
+\end{equation}
+
+We have to prove that
+
+\begin{equation}
+\lvert Fib(n) - \frac{\phi^n}{\sqrt 5} \rvert < \frac{1}{2}
+\end{equation}
+
+that is, =ϕ^n/√5= is, at most, a half away of =Fib(n)=, and since =Fib(n+1)= is an integer greater thatn =Fib(n)=, then that proof has to be enough.
+
+But we've proven that =Fib(n)= is =(ϕ^n-ψ^n)/√5=
+
+\begin{equation}
+\lvert \frac{\phi^n - \psi^n}{\sqrt 5} - \frac{\phi^n}{\sqrt 5} \rvert < \frac{1}{2}
+\end{equation}
+
+\begin{equation}
+\lvert \frac{- \psi^n}{\sqrt 5} \rvert < \frac{1}{2}
+\end{equation}
+
+Now, let's use induction again to prove it.
+
+Here's the base case
+
+\begin{equation}
+\lvert \frac{- \psi^0}{\sqrt 5} \rvert < \frac{1}{2}
+\end{equation}
+
+\begin{equation}
+\lvert \frac{- 1}{\sqrt 5} \rvert < \frac{1}{2}
+\end{equation}
+
+\begin{equation}
+\frac{1}{\sqrt 5} < \frac{1}{2}
+\end{equation}
+
+\begin{equation}
+2 < \sqrt 5
+\end{equation}
+
+which is true.
+
+And here's the inductive case
+
+\begin{equation}
+\lvert \frac{- \psi^{n+1}}{\sqrt 5} \rvert < \frac{1}{2}
+\end{equation}
+
+\begin{equation}
+\lvert \frac{- \psi^n}{\sqrt 5} \psi \rvert < \frac{1}{2}
+\end{equation}
+
+Now, we know
+
+\begin{equation}
+\lvert \frac{- \psi^n}{\sqrt 5} \rvert < \frac{1}{2}
+\end{equation}
+
+but let's suppose that
+
+\begin{equation}
+\lvert \frac{- \psi^n}{\sqrt 5} \rvert = \frac{1}{2}
+\end{equation}
+
+if that's the case we'll get
+
+\begin{equation}
+\lvert -\frac{1}{2} \frac{1 - \sqrt 5}{2} \rvert < \frac{1}{2}
+\end{equation}
+
+\begin{equation}
+\lvert \frac{\sqrt 5 - 1}{4} \rvert < \frac{1}{2}
+\end{equation}
+
+\begin{equation}
+\lvert \sqrt 5 - 1 \rvert < 2
+\end{equation}
+
+which is true, then, it has to be also true in the same case that
+
+\begin{equation}
+\lvert \frac{- \psi^n}{\sqrt 5} \rvert < \frac{1}{2}
+\end{equation}
+
+since that number being less than a half is going to cause the when multiplied by ψ the result is going to be also less than a half.
+
+Hence, we've proved that
+
+\begin{equation}
+\lvert \frac{- \psi^n}{\sqrt 5} \rvert < \frac{1}{2}
+\end{equation}
+
+and by that, that =Fib(n)= has to be the closest integer to =ϕ^n/√5=.
