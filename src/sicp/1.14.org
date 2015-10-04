@@ -72,11 +72,11 @@ The Haskell script is the following:
             n' = n - 1
         in
           do
-            x <- writer (0, [[getLog a n, getLog a n']
-                            ,[getLog a n, getLog a' n]])
-            y <- cc a n'
-            z <- cc a' n
-            return (x + y + z)
+            tell [[getLog a n, getLog a n']
+                 ,[getLog a n, getLog a' n]]
+            x <- cc a n'
+            y <- cc a' n
+            return (x + y)
 
   firstDenomination n | n == 1 = 1
                       | n == 2 = 5
