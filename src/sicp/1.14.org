@@ -65,9 +65,17 @@ The Haskell script is the following:
   countChange a = cc a 5
 
   cc a n
-    | a == 0          = writer (1, [[getLog a n, "1"]])
-    | a < 0 || n == 0 = writer (0, [[getLog a n, "0"]])
-    | otherwise       =
+    | a == 0 =
+        do
+          tell [[getLog a n, "1"]]
+          return 1
+
+    | a < 0 || n == 0 =
+        do
+          tell [[getLog a n, "0"]]
+          return 0
+
+    | otherwise =
         let a' = a - firstDenomination n
             n' = n - 1
         in
