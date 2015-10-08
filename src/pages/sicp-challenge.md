@@ -12,4 +12,4 @@ Let's get started!
 
 # Chapter 1 - Building Abstractions with Procedures
 
-[1.1](/sicp/1.1.html) , [1.2](/sicp/1.2.html) , [1.3](/sicp/1.3.html) , [1.4](/sicp/1.4.html) , [1.5](/sicp/1.5.html) , [1.6](/sicp/1.6.html) , [1.7](/sicp/1.7.html) , [1.8](/sicp/1.8.html) , [1.9](/sicp/1.9.html) , [1.10](/sicp/1.10.html) , [1.11](/sicp/1.11.html) , [1.12](/sicp/1.12.html) , [1.13](/sicp/1.13.html) , [1.14](/sicp/1.14.html) , [1.15](/sicp/1.15.html) , [1.16](/sicp/1.16.html) , [1.17](/sicp/1.17.html)
+[1.1](/sicp/1.1.html) , [1.2](/sicp/1.2.html) , [1.3](/sicp/1.3.html) , [1.4](/sicp/1.4.html) , [1.5](/sicp/1.5.html) , [1.6](/sicp/1.6.html) , [1.7](/sicp/1.7.html) , [1.8](/sicp/1.8.html) , [1.9](/sicp/1.9.html) , [1.10](/sicp/1.10.html) , [1.11](/sicp/1.11.html) , [1.12](/sicp/1.12.html) , [1.13](/sicp/1.13.html) , [1.14](/sicp/1.14.html) , [1.15](/sicp/1.15.html) , [1.16](/sicp/1.16.html) , [1.17](/sicp/1.17.html) , [1.18](/sicp/1.18.html)
