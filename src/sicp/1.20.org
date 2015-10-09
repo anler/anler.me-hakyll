@@ -1,0 +1,236 @@
+---
+title: SICP: Exercise 1.20
+---
+
+The process that a procedure generates is of course dependent on the rules used by the interpreter. As an example, consider the iterative =gcd= procedure given above. Suppose we were to interpret this procedure using normal-order evaluation, as discussed in section 1.1.5. (The normal-order-evaluation rule for =if= is described in exercise 1.5.) Using the substitution method (for normal order), illustrate the process generated in evaluating =(gcd 206 40)= and indicate the =remainder= operations that are actually performed. How many =remainder= operations are actually performed in the normal-order evaluation of =(gcd 206 40)=? In the applicative-order evaluation?
+
+Note: The =gcd= procedure mentioned is the Euclid's Greatest Common Divisor Algorithm. The idea of the algorithm is based in the observation that, if /r/ is the remainder when /a/ is divided by /b/, then the common divisors of /a/ and /b/ are precisely the same as for /b/ and /r/.
+
+\begin{equation}
+GCD(a,b) = GCD(b,r) \\
+where\ r = remainder\ of\ \frac{a}{b}
+\end{equation}
+
+#+BEGIN_SRC scheme
+  (define (gcd a b)
+    (if (= b 0)
+        a
+        (gcd b (remainder a b))))
+#+END_SRC
+
+* Solution
+
+Using normal order of evaluation the =remainder= operation is performed 18 times while using applicative order the operation is performed 4 times.
+
+Normal order substitution
+#+BEGIN_SRC scheme
+  (gcd 206 40)
+
+  ;; evaluates to (remainder called 0 times) →
+
+  (if (= 40 0)
+      206
+      (gcd 40
+           (remainder 206 40)))
+
+  ;; evaluates to (remainder called 0 times) →
+
+  (gcd 40
+       (remainder 206 40))
+
+  ;; evaluates to (remainder called 0 times) →
+
+  (if (= (remainder 206 40) 0)
+      40
+      (gcd (remainder 206 40)
+           (remainder 40 (remainder 206 40))))
+
+  ;; evaluates to (remainder called 1 times) →
+
+  (if (= 6 0)
+      40
+      (gcd (remainder 206 40)
+           (remainder 40 (remainder 206 40))))
+
+  ;; evaluates to (remainder called 1 times) →
+
+  (gcd (remainder 206 40)
+       (remainder 40 (remainder 206 40)))
+
+  ;; evaluates to (remainder called 1 times) →
+
+  (if (= (remainder 40 (remainder 206 40)) 0)
+      (remainder 206 40)
+      (gcd (remainder 40 (remainder 206 40))
+           (remainder
+            (remainder 206 40)
+            (remainder 40 (remainder 206 40)))))
+
+  ;; evaluates to (remainder called 3 times) →
+
+  (if (= 4 0)
+      (remainder 206 40)
+      (gcd (remainder 40 (remainder 206 40))
+           (remainder
+            (remainder 206 40)
+            (remainder 40 (remainder 206 40)))))
+
+  ;; evaluates to (remainder called 3 times) →
+
+  (gcd (remainder 40 (remainder 206 40))
+       (remainder
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40))))
+
+  ;; evaluates to (remainder called 3 times) →
+
+  (if (= (remainder
+          (remainder 206 40)
+          (remainder 40 (remainder 206 40)))
+         0)
+      (remainder 40 (remainder 206 40))
+      (gcd (remainder
+            (remainder 206 40)
+            (remainder 40 (remainder 206 40)))
+           (remainder
+            (remainder 40 (remainder 206 40))
+            (remainder
+             (remainder 206 40)
+             (remainder 40 (remainder 206 40))))))
+
+  ;; evaluates to (remainder called 7 times) →
+
+  (if (= 2 0)
+      (remainder 40 (remainder 206 40))
+      (gcd (remainder
+            (remainder 206 40)
+            (remainder 40 (remainder 206 40)))
+           (remainder
+            (remainder 40 (remainder 206 40))
+            (remainder
+             (remainder 206 40)
+             (remainder 40 (remainder 206 40))))))
+
+  ;; evaluates to (remainder called 7 times) →
+
+  (gcd (remainder
+        (remainder 206 40)
+        (remainder 40 (remainder 206 40)))
+       (remainder
+        (remainder 40 (remainder 206 40))
+        (remainder
+         (remainder 206 40)
+         (remainder 40 (remainder 206 40)))))
+
+  ;; evaluates to (remainder called 7 times) →
+
+  (if (= (remainder
+          (remainder 40 (remainder 206 40))
+          (remainder
+           (remainder 206 40)
+           (remainder 40 (remainder 206 40))))
+         0)
+      (remainder
+       (remainder 206 40)
+       (remainder 40 (remainder 206 40)))
+      (gcd (remainder
+            (remainder 40 (remainder 206 40))
+            (remainder
+             (remainder 206 40)
+             (remainder 40 (remainder 206 40))))
+           (remainder
+            (remainder
+             (remainder 206 40)
+             (remainder 40 (remainder 206 40)))
+            (remainder
+             (remainder 40 (remainder 206 40))
+             (remainder
+              (remainder 206 40)
+              (remainder 40 (remainder 206 40)))))))
+
+  ;; evaluates to (remainder called 14 times) →
+
+  (if (= 0 0)
+      (remainder
+       (remainder 206 40)
+       (remainder 40 (remainder 206 40)))
+      (gcd (remainder
+            (remainder 40 (remainder 206 40))
+            (remainder
+             (remainder 206 40)
+             (remainder 40 (remainder 206 40))))
+           (remainder
+            (remainder
+             (remainder 206 40)
+             (remainder 40 (remainder 206 40)))
+            (remainder
+             (remainder 40 (remainder 206 40))
+             (remainder
+              (remainder 206 40)
+              (remainder 40 (remainder 206 40)))))))
+
+  ;; evaluates to (remainder called 14 times) →
+
+  (remainder
+   (remainder 206 40)
+   (remainder 40 (remainder 206 40)))
+
+  ;; evaluates to (remainder called 18 times) →
+
+  2
+#+END_SRC
+
+Applicative order substitution
+#+BEGIN_SRC scheme
+  (gcd 206 40)
+
+  ;; evaluates to (remainder called 0 times) →
+
+  (if (= 40 0)
+      206
+      (gcd 40 (remainder 206 40)))
+
+  ;; evaluates to (remainder called 1 times) →
+
+  (gcd 40 6)
+
+  ;; evaluates to (remainder called 1 times) →
+
+  (if (= 6 0)
+      40
+      (gcd 6 (remainder 40 6)))
+
+  ;; evaluates to (remainder called 2 times) →
+
+  (gcd 6 4)
+
+  ;; evaluates to (remainder called 2 times) →
+
+  (if (= 4 0)
+      6
+      (gcd 6 (remainder 6 4)))
+
+  ;; evaluates to (remainder called 3 times) →
+
+  (gcd 6 2)
+
+  ;; evaluates to (remainder called 3 times) →
+
+  (if (= 2 0)
+      6
+      (gcd 2 (remainder 6 2)))
+
+  ;; evaluates to (remainder called 4 times) →
+
+  (gcd 2 0)
+
+  ;; evaluates to (remainder called 4 times) →
+
+  (if (= 0 0)
+      2
+      (gcd 0 (remainder 2 0)))
+
+  ;; evaluates to (remainder called 4 times) →
+
+  2
+#+END_SRC
