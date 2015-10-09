@@ -1,0 +1,135 @@
+---
+title: SICP: Exercise 1.19
+---
+
+There is a clever algorithm for computing the Fibonacci numbers in a logarithmic number of steps. Recall the transformation of the state variables =a= and =b= in the =fib-iter= process: =a ← a + b= and =b ← a=. Call this transformation /T/, and observe that applying /T/ over and over again /n/ times, stating with 1 and 0, produces the pair Fib(/n/ + 1) and Fib(/n/). In other words, the Fibonacci numbers are produced by applying /T^n/, the /n/-th power of the transformation /T/, starting with the pair (1, 0).
+
+Now consider /T/ to be the special case of /p=0/ and /q=1/ in a family of transformations /Tpq/, where /Tpq/ transforms the pair (/a/, /b/) according to /a ← bq + aq + ap/ and /b ← bp + aq/. Show that if we apply such a transformation /Tpq/ twice, the effect is the same as using a single transformation Tp'q' of the same form, and compute p' and q' in terms of p and q.
+This gives us an explicit way to square these transformations, and thus we can compute /T^n/ using successive squaring, as in the =fast-expt= procedure. Put this all together to complete the following procedure, which runs in a logarithmic number of steps:
+
+#+BEGIN_SRC scheme
+  (define (fib n)
+    (fib-iter 1 0 0 1 n))
+
+  (define (fib-iter a b p q count)
+    (cond ((= count 0) b)
+          ((even? count)
+           (fib-iter a
+                     b
+                     ??                   ; compute p'
+                     ??                   ; compute q'
+                     (/ count 2)))
+          (else (fib-iter (+ (* b q) (* a q) (* a p))
+                          (+ (* b q) (* a q))
+                          p
+                          q
+                          (- count 1)))))
+#+END_SRC
+
+* Solution
+
+The transformation we are looking for is:
+
+\begin{equation}
+T_{p'q'} \begin{cases} a \leftarrow bq' + aq' + ap' \\
+b \leftarrow bp' + aq' \end{cases}
+\end{equation}
+
+and where p' and q' are
+
+\begin{equation}
+p' = p^2 + q^2 \\
+q' = q^2 + 2pq
+\end{equation}
+
+The result is obtained, as the problem said, from applying the /Tpq/ transformation twice
+
+First iteration,
+
+\begin{equation}
+a' = bq + aq + ap \\
+b' = bp + aq
+\end{equation}
+
+and second iteration (let's start with b' since is going to shed more light in which is p' and q', later we will look for them in a'),
+
+\begin{equation}
+b'' = b'p + a'q \\
+\end{equation}
+
+developing that we get
+\begin{equation}
+b'p + a'q =\\
+(bp + aq)p + (bq + aq + ap)q =\\
+bp^2 + apq + bq^2 + aq^2 + apq =\\
+2apq + bp^2 + bq^2 + aq^2 =\\
+b(p^2 + q^2) + a(q^2 + 2pq) =\\
+bq' + ap'
+\end{equation}
+
+So we know q' and p', let's confirm they appear also in a'',
+
+\begin{equation}
+a'' = b'q + a'q + a'p
+\end{equation}
+
+developing that we get
+
+\begin{equation}
+b'q + a'q + a'p =\\
+(bp + aq)q + (bq + aq + ap)q + (bq + aq + ap)p =\\
+bpq + aq^2 + bq^2 + aq^2 + apq + bpq + apq + ap^2 =\\
+2bpq + bq^2 + aq^2 + 2apq + aq^2 + ap^2 =\\
+b(q^2 + 2pq) + a(q^2 + 2pq) + a(p^2 + q^2) =\\
+bq' + aq' + ap'
+\end{equation}
+
+so indeed our result for p' and q' are correct.
+
+Now we just need to complete the algorithm
+
+#+BEGIN_SRC scheme
+  (define (fib n)
+    (fib-iter 1 0 0 1 n))
+
+  (define (fib-iter a b p q count)
+    (cond ((= count 0) b)
+          ((even? count)
+           (fib-iter a
+                     b
+                     (+ (square p)
+                        (square q))               ; compute p'
+                     (+ (square q)
+                        (* 2 p q))                ; compute q'
+                     (/ count 2)))
+          (else (fib-iter (+ (* b q) (* a q) (* a p))
+                          (+ (* b q) (* a q))
+                          p
+                          q
+                          (- count 1)))))
+
+  (define (square x) (* x x))
+#+END_SRC
+
+and as always, the Haskell equivalent
+
+#+BEGIN_SRC haskell
+  fib n = fibIter a b p q n
+      where a = 1
+            b = 0
+            p = 0
+            q = 1
+
+  fibIter a b p q count
+      | count == 0 = b
+      | even count =
+          let p' = p^2 + q^2
+              q' = q^2 + 2*p*q
+          in
+            fibIter a b p' q' (count `div` 2)
+      | otherwise =
+          let a' = b*q + a*q + a*p
+              b' = b*p + a*q
+          in
+            fibIter a' b' p q (pred count)
+#+END_SRC
