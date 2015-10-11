@@ -54,10 +54,11 @@ b' = bp + aq
 and here's the second iteration,
 
 \begin{equation}
-b'' = b'p + a'q \\
+a'' = b'q + a'q + a'p \\
+b'' = b'p + a'q
 \end{equation}
 
-Let's start working with b'' transformation since is going to shed more light on which is p' and q' although is not required.
+Let's start working with =b''= transformation since is going to shed more light on which is p' and q' although is not required.
 Expanding the b'' expression we obtain
 
 \begin{equation}
@@ -69,7 +70,7 @@ b(p^2 + q^2) + a(q^2 + 2pq) =\\
 bq' + ap'
 \end{equation}
 
-So we know q' and p', let's confirm they appear also in a'',
+So we know q' and p', let's confirm they also are in a'',
 
 \begin{equation}
 a'' = b'q + a'q + a'p
@@ -86,7 +87,7 @@ b(q^2 + 2pq) + a(q^2 + 2pq) + a(p^2 + q^2) =\\
 bq' + aq' + ap'
 \end{equation}
 
-so indeed our result for p' and q' are correct.
+so indeed our result for p' and q' are correct (when developing this step the key is not to group the term aq^2 otherwise you won't find the solution).
 
 Now we just need to complete the algorithm
 

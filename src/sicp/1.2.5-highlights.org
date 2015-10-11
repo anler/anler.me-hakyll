@@ -1,0 +1,53 @@
+---
+title: Section 1.2.5 Greatest Common Divisors - Highlights
+---
+
+This section talks about GCDs, that is, Greatest Common Divisors or Greatest Common Factors which is better name I believe since the process of breaking a number into its components is called *factorization*.
+
+Number factorization is the decomposition of a number into *a product of other numbers* known as *factors*, which when multiplied together give the original.
+
+Factorization is intimately related to *prime numbers*, prime numbers are considered the *atoms* of numbers, they cannot be decomposed apart as the rest of the (composite) numbers, their only factors are 1 and itself.
+
+The first prime number is 2 and is the only *even prime number* because any other even number is going to be divisible by 2.
+
+Why is 1 no longer a prime number? The answer is related to Euclid's fundamental theorem of arithmetic.
+
+#+BEGIN_QUOTE
+If two numbers by multiplying one another make some number, and any prime number measure the product, it will also measure one of the original numbers.
+
+Any number either is prime or is measured by some prime number.
+
+— Euclid, Elements Book VII, Proposition 30 and 32
+#+END_QUOTE
+
+In other words, every natural number *greater than one* either is a prime or is the product of prime numbers (composite) and this product is unique (except for their order).
+
+This theorem is one of the main reasons for which 1 is not considered as a prime number: if 1 were prime, the factorization would not be unique, as, for example, 2 = 2×1 = 2×1×1 = ...
+
+So 1 is not prime nor is composite, it falls in a class of numbers called *units* which are the numbers whose reciprocals are also whole numbers, 0 is also not considered a prime or a composite number, it falls in a class of numbers called *zero-divisors* which are the numbers that, when multiplied by some non-zero number, the product is zero.
+
+Using that theorem we can easily find the GCD of some numbers by factoring them out. For example, let's find the GCD of 120 and 50.
+\begin{equation}
+factorize\ 120 = 2 * 2 * 2 * 3 * 5 \\
+factorize\ 50 = 2 * 5 * 5 \\
+\end{equation}
+
+The union set of the factors of each number is /{2, 5}/ so the greatest number that is a factor of both /120/ and /50/ is /10/ (2 times 5).
+
+If the GCD of some numbers is 1, then the numbers are said to be *coprimes*, they share no other divisor but 1. Factors give rise to a family of numbers called *perfect numbers*, numbers where their factors' sum (except themselves) is the value of the number itself, for example: 6 = 1 + 2 + 3.
+
+In this section of the book the Euclid's algorithm for computing GCDs is presented and Lame's theorem is used to prove that the order of growth of this algorithm is /ϴ(log n)/.
+
+The idea of the algorithm is based on the observation that
+
+\begin{equation}
+GCD\ a\ b = GCD\ b\ r \\
+where\ r = remainder\ of\ \frac{a}{b}
+\end{equation}
+
+Why use this algorithm and not devise one that uses factorization as we did in our example you ask? Because factorization is thought to be a computationally difficult problem, specially for really large numbers. However, it has not been proven that no efficient algorithm exists. The presumed difficulty of this problem is at the heart of widely used algorithms in cryptography such as RSA. Many areas of mathematics and computer science have been brought to bear on the problem, including elliptic curves, algebraic number theory, and quantum computing.
+
+* References
+- [[https://www.wikipedia.org/][Wikipedia]]
+- [[http://www.amazon.com/Maths-Minutes-Concepts-Explained-Instant/dp/1780873697][Maths in minutes: 200 key concepts explained in an instant]]
+- [[https://mitpress.mit.edu/sicp/full-text/book/book.html][Structure and interpretation of computer programs]]

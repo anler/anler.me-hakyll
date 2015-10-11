@@ -1,0 +1,54 @@
+---
+title: Section 1.2.6 Testing for Primality - Highlights
+---
+
+This section of the book is all about finding an algorithm that given a number determines if it's prime or not. Two algorithms are presented, one with order of growth  /ϴ(√n)/ and other with order of growth  /ϴ(log n)/.
+
+** First Algorithm - Trial division.
+They idea of this algorithm is that in order to find if /n/ is prime we try each number /x, 1 < x < n/ and see if it divides the original number, if it does then our number is not prime, otherwise it is prime. This algorithm can be improved though since we don't need to check /all numbers/ up to /n/.
+
+One improvement is to check up to =n/2= sin for every number /n/ its greatest factor is less than or equal to =n/2=.
+
+Another improvement (the one proposed in the book) is to check only up to =√n= since after that number the divisors of /n/ just flip around and repeat. For example
+
+\begin{equation}
+100 = \\
+2 * 50 = 4 * 25 = 5 * 20 = 10 * 10 = (flip)\\
+20 * 5 = 25 * 4 = 50 * 2
+\end{equation}
+
+So if there's a divisor, it has to be less than or equal to =√n=.
+
+Further improvements can be made but they don't really affect the order of growth, take a look at the [[https://en.wikipedia.org/wiki/Primality_test][Wikipedia article]].
+
+** Second Algorithm - The Fermat test
+
+#+BEGIN_QUOTE
+If /n/ is a prime number and /a/ is any positive integer less than /n/, then /a/ raised to the /n/-th power is congruent to /a/ modulo /n/.
+
+-- Fermat's Little Theorem
+#+END_QUOTE
+
+*Congruence*: We say a number /a/ is /congruent modulo n/ to another number /b/ if /n/ divides /a - b/ or if they both have the same remainder when divided by /n/.
+
+So the theorem is saying the following
+
+\begin{equation}
+a^n \equiv a (mod\ n) \\
+iff\ n\ is\ prime\ and\ a < n
+\end{equation}
+
+If /n/ is not prime in general most of the numbers /a < n/ will not satisfy the above relation. This leads to the following /probabilistic/ algorithm known as Fermat test:
+
+Given a number /n/, let's pick a random number /a < n/, then test the following
+
+\begin{equation}
+a^n\ mod\ n = a
+\end{equation}
+
+If it's true, chances are good that /n/ is prime.
+If it's false, then /n/ is certainly not prime.
+
+By repeating the same operation over and over again, picking in each step a different random /a/ we can increase our confidence in the result.
+
+There are numbers that fool the Fermat test, they are called /Carmichael numbers/ and they are extremely rare, so the test is quite reliable in practice.
