@@ -58,7 +58,8 @@ pre {
 blockquote {
   padding: 0 0 0 20px;
   margin: 0 30px 20px -8px;
-  border-left: 8px solid black;
+  border-left: 8px solid #666;
+  color: #666;
 }
 blockquote p:last-child {
   margin-bottom: 0;
