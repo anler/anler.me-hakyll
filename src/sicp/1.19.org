@@ -44,20 +44,22 @@ q' = q^2 + 2pq
 
 The result is obtained, as the problem said, from applying the /Tpq/ transformation twice
 
-First iteration,
+Here's the first iteration,
 
 \begin{equation}
 a' = bq + aq + ap \\
 b' = bp + aq
 \end{equation}
 
-and second iteration (let's start with b' since is going to shed more light in which is p' and q', later we will look for them in a'),
+and here's the second iteration,
 
 \begin{equation}
 b'' = b'p + a'q \\
 \end{equation}
 
-developing that we get
+Let's start working with b'' transformation since is going to shed more light on which is p' and q' although is not required.
+Expanding the b'' expression we obtain
+
 \begin{equation}
 b'p + a'q =\\
 (bp + aq)p + (bq + aq + ap)q =\\
