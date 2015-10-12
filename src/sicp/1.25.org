@@ -1,0 +1,16 @@
+---
+title: SICP: Exercise 1.25
+---
+
+Alyssa P. Hacker complains that we went to a lot of extra work in writing =expmod=. After all, she says, since we already know how to compute exponentials, we could have simply written
+
+#+BEGIN_SRC scheme
+  (define (expmod base exp m)
+    (remainder (fast-expt base exp) m))
+#+END_SRC
+
+Is she correct? Would this procedure serve as well for our fast prime tester? Explain.
+
+* Solution
+
+Yes and no, she is correct in the sense this procedure is correct and serve as well since instead of doing exponentiation and remainder at the same time, it first do exponentiation and finally do the remainder and both ways are equivalent. She's wrong in that will serve /as well for our fast prime/ tester because the exponentiation-first solution might end working with very big numbers which may turn to be more inefficient to work with.

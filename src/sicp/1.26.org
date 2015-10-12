@@ -1,0 +1,26 @@
+---
+title: SICP: Exercise 1.26
+---
+
+Louis Reasoner is having great difficulty doing exercise 1.24. His =fast-prime?= test seems to run more slowly than his =prime?= test. Louis calls his friend Eva Lu Ator over to help. When they examine Louis's code, they find that he has rewritten the =expmod= procedure to use an explicit multiplication, rather than calling square:
+
+#+BEGIN_SRC scheme
+  (define (expmod base exp m)
+    (cond ((= exp 0) 1)
+          ((even? exp)
+           (remainder (* (expmod base (/ exp 2) m)
+                         (expmod base (/ exp 2) m))
+                      m))
+          (else
+           (remainder (* base (expmod base (- exp 1) m))
+                      m))))
+#+END_SRC
+
+"I don't see what difference that could make", says Louis.
+"I do." says Eva. "By writing the procedure like that, you have transformed the Θ(log n) process into a Θ(n) process."
+
+Explain.
+
+* Solution
+
+The problem is that by not using the =square= procedure he's creating a process with /binary-tree recursion/ with twice redundant work being done, so we are going from halving the work in each step to doubling it therefore the order of growth becomes linear.

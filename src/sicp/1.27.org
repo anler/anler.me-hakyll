@@ -1,0 +1,23 @@
+---
+title: SICP: Exercise 1.27
+---
+
+Demonstrate that the Carmichael numbers listed in footnote 47 really do fool the Fermat test. That is, write a procedure that takes an integer /n/ and tests whether /a^n/ is congruent to /a modulo n/ for every /a < n/, and try your procedure on the given Carmichael numbers.
+
+* Solution
+
+Using the following script we see that indeed every number /n/ listed in footnote 47 fool the Fermat test for every number /a < n/.
+
+#+BEGIN_SRC haskell
+  main = do
+    putStrLn $ "561 - " ++ show (carmichaelTest 561)
+    putStrLn $ "1105 - " ++ show (carmichaelTest 1105)
+    putStrLn $ "1729 - " ++ show (carmichaelTest 1729)
+    putStrLn $ "2465 - " ++ show (carmichaelTest 2465)
+    putStrLn $ "2821 - " ++ show (carmichaelTest 2821)
+    putStrLn $ "6601 - " ++ show (carmichaelTest 6601)
+
+  carmichaelTest :: Integer -> Bool
+  carmichaelTest n = and . map fermatTest $ take (fromInteger n) [0..]
+      where fermatTest a = a^n `mod` n == a
+#+END_SRC

@@ -1,0 +1,54 @@
+---
+title: SICP: Exercise 1.24
+---
+
+Modify the =timed-prime-test= procedure of exercise 1.22 to use =fast-prime?= (the Fermat method), and test each of the 12 primes you found in that exercise. Since the Fermat test has Θ(log n) growth, how would you expect the time to test primes near 1,000,000 to compare with the time needed to test primes near 1000? Do your data bear this out? Can you explain any discrepancy you find?
+
+* Solution
+
+First 3 primes > 1000
+#+BEGIN_SRC text
+  1009 *** 0.003173828125    0.0009765625
+  1013 *** 0.004150390625    0.001953125
+  1019 *** 0.00390625        0.001953125
+#+END_SRC
+
+First 3 primes > 10,000
+#+BEGIN_SRC text
+  10007 *** 0.005126953125   0.004150390625
+  10009 *** 0.0048828125     0.00390625
+  10037 *** 0.0048828125     0.004150390625
+#+END_SRC
+
+First 3 primes > 100,000
+#+BEGIN_SRC text
+  100003 *** 0.005126953125  0.009033203125
+  100019 *** 0.006103515625  0.008056640625
+  100043 *** 0.006103515625  0.008056640625
+#+END_SRC
+
+First 3 primes > 1,000,000
+#+BEGIN_SRC text
+  1000003 *** 0.005859375      0.02099609375
+  1000033 *** 0.006103515625   0.02099609375
+  1000037 *** 0.005126953125   0.02001953125
+#+END_SRC
+
+*Since the Fermat test has Θ(log n) growth, how would you expect the time to test primes near 1,000,000 to compare with the time needed to test primes near 1000?*
+
+As we're squaring the size of the problem I expect the time to roughly double.
+\begin{equation}
+time = log\ n \\
+log\ n^2 = 2log\ n = 2\ time
+\end{equation}
+
+*Do your data bear this out? Can you explain any discrepancy you find?*
+
+We can easily see that the data mostly bear this out
+#+BEGIN_SRC text
+  2 x 0.003173828125  =  0.00634765625  ≅  0.005859375
+  2 x 0.004150390625  =  0.00830078125  ≅  0.006103515625
+  2 x 0.00390625      =  0.0078125      ≅  0.005126953125
+#+END_SRC
+
+Why is not exactly the double is probably because of all the steps we ignoring the computer is doing.

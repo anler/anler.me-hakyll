@@ -1,0 +1,42 @@
+---
+title: SICP: Exercise 1.23
+---
+
+The =smallest-divisor= procedure shown at the start of this section does lots of needless testing: After it checks to see if the number is divisible by 2 there is no point in checking to see if it is divisible by any larger even numbers. This suggests that the values used for =test-divisor= should not be 2, 3, 4, 5, 6, ..., but rather 2, 3, 5, 7, 9, .... To implement this change, define a procedure =next= that returns 3 if its input is equal to 2 and otherwise returns its input plus 2. Modify the =smallest-divisor= procedure to use =(next test-divisor)= instead of =(+ test-divisor 1)=. With =timed-prime-test= incorporating this modified version of =smallest-divisor=, run the test for each of the 12 primes found in exercise 1.22. Since this modification halves the number of test steps, you should expect it to run about twice as fast. Is this expectation confirmed? If not, what is the observed ratio of the speeds of the two algorithms, and how do you explain the fact that it is different from 2?
+
+* Solution
+
+First 3 primes > 1000
+#+BEGIN_SRC text
+  1009 *** 0.0009765625         0.0009765625
+  1013 *** 0.001953125          0.0009765625
+  1019 *** 0.001953125          0.001953125
+#+END_SRC
+
+First 3 primes > 10,000
+#+BEGIN_SRC text
+  10007 *** 0.004150390625      0.00390625
+  10009 *** 0.00390625          0.003173828125
+  10037 *** 0.004150390625      0.0029296875
+#+END_SRC
+
+First 3 primes > 100,000
+#+BEGIN_SRC text
+  100003 *** 0.009033203125     0.02099609375
+  100019 *** 0.008056640625     0.034912109375
+  100043 *** 0.008056640625     0.01904296875
+#+END_SRC
+
+First 3 primes > 1,000,000
+#+BEGIN_SRC text
+  1000003 *** 0.02099609375     0.04296875
+  1000033 *** 0.02099609375     0.052001953125
+  1000037 *** 0.02001953125     0.0419921875
+#+END_SRC
+
+*Since this modification halves the number of test steps, you should expect it to run about twice as fast. Is this expectation confirmed?*
+
+It roughly runs about twice as fast when the number becomes bigger 100,000 or 1,000,000.
+
+*If not, what is the observed ratio of the speeds of the two algorithms, and how do you explain the fact that it is different from 2?*
+The observed ratio is between 1 and 2, why is not exactly 2 is because even when the number of steps should have gone to halve we introduced a procedure call plus a condition.

@@ -1,0 +1,129 @@
+---
+title: SICP: Exercise 1.22
+---
+
+Most Lisp implementations include a primitive called =runtime= that returns an integer that specifies the amount of time the system has been running (measured, for example, in microseconds). The following =timed-prime-test= procedure, when called with an integer /n/, prints /n/ and checks to see if /n/ is prime. If /n/ is prime, the procedure prints three asterisks followed by the amount of time used in performing the test.
+
+#+BEGIN_SRC scheme
+  (define (timed-prime-test n)
+    (newline)
+    (display n)
+    (start-prime-test n (runtime)))
+
+  (define (start-prime-test n start-time)
+    (if (prime? n)
+        (report-prime (- (runtime)
+                         start-time))))
+
+  (define (report-prime elapsed-time)
+    (display " *** ")
+    (display elapsed-time))
+#+END_SRC
+
+Using this procedure, write a procedure =search-for-primes= that checks the primality of consecutive odd integers in a specified range. Use your procedure to find the three smallest primes larger than 1000; larger than 10,000; larger than 100,000; larger than 1,000,000. Note the time needed to test each prime. Since the testing algorithm has order of growth of Θ(√n), you should expect that testing for primes around 10,000 should take about √10 times as long as testing for primes around 1000. Do your timing data bear this out? How well do the data for 100,000 and 1,000,000 support the √n prediction? Is your result compatible with the notion that programs on your machine run in time proportional to the number of steps required for the computation?
+
+* Solution
+
+When running my tests I got the following results
+
+First 3 primes > 1000
+#+BEGIN_SRC text
+  1009 *** 0.0009765625
+  1013 *** 0.0009765625
+  1019 *** 0.001953125
+#+END_SRC
+
+First 3 primes > 10,000
+#+BEGIN_SRC text
+  10007 *** 0.00390625
+  10009 *** 0.003173828125
+  10037 *** 0.0029296875
+#+END_SRC
+
+First 3 primes > 100,000
+#+BEGIN_SRC text
+  100003 *** 0.02099609375
+  100019 *** 0.034912109375
+  100043 *** 0.01904296875
+#+END_SRC
+
+First 3 primes > 1,000,000
+#+BEGIN_SRC text
+  1000003 *** 0.04296875
+  1000033 *** 0.052001953125
+  1000037 *** 0.0419921875
+#+END_SRC
+
+*Since the testing algorithm has order of growth of Θ(√n), you should expect that testing for primes around 10,000 should take about √10 times as long as testing for primes around 1000. Do your timing data bear this out?*
+
+#+BEGIN_SRC text
+  0.0009765625√10 = 0.003088162           0.00390625
+  0.0009765625√10 = 0.003088162           0.003173828125
+  0.001953125√10  = 0.006176324           0.0029296875
+#+END_SRC
+
+As I see, kind of, specially when computing the first 2 primes in each case.
+
+*How well do the data for 100,000 and 1,000,000 support the √n prediction?*
+
+#+BEGIN_SRC text
+  0.02099609375√10  = 0.06639547822        0.04296875
+  0.034912109375√10 = 0.11040178355        0.052001953125
+  0.01904296875√10  = 0.06021915466        0.0419921875
+#+END_SRC
+
+Is not that close in this case, specially when computing the second prime but still is reasonably close.
+
+*Is your result compatible with the notion that programs on your machine run in time proportional to the number of steps required for the computation?*
+
+I guess since even when in symptotic analysis we assume all numbers are equal they are not inside a real computer, for bigger numbers the computer has to do more steps affecting the net time.
+
+*Program*
+
+Here's the complete program I'm using, I had to make some modifications since I'm using Racket instead of Scheme.
+
+#+BEGIN_SRC scheme
+  (define (smallest-divisor n)
+    (find-divisor n 2))
+
+  (define (square x) (* x x))
+
+  (define (find-divisor n test-divisor)
+    (cond ((> (square test-divisor) n)
+           n)
+          ((divides? test-divisor n)
+           test-divisor)
+          (else (find-divisor n (+ test-divisor 1)))))
+
+  (define (divides? a b)
+    (= (remainder b a)
+       0))
+
+  (define (prime? n)
+    (= n (smallest-divisor n)))
+
+  (define (timed-prime-test n)
+    (newline)
+    (display n)
+    (start-prime-test n (current-inexact-milliseconds)))
+
+  (define (start-prime-test n start-time)
+    (when (prime? n)
+      (report-prime (- (current-inexact-milliseconds)
+                       start-time))))
+
+  (define (report-prime elapsed-time)
+    (display " *** ")
+    (display elapsed-time))
+
+  (define (search-for-primes start num-primes)
+    (cond ((even? start)
+           (search-for-primes (+ start 1) num-primes))
+          ((>= num-primes 0)
+           (timed-prime-test start)
+           (search-for-primes (+ start 2)
+                              (if (prime? (+ start 2))
+                                  (- num-primes 1)
+                                  num-primes)))
+          (else (newline))))
+#+END_SRC
