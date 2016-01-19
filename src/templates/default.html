@@ -20,49 +20,57 @@
     <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/fonts/cmun-serif.css">
-    <link rel="stylesheet" type="text/css" href="/css/syntax.css">
     <link rel="stylesheet" type="text/css" href="/css/default.css">
   </head>
   <body>
-    <header id="header">
-      <nav>
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/archive.html">Archive</a></li>
-          <li><a href="/about.html">About</a></li>
-          <li><a href="/sicp-challenge.html">The SICP challenge</a></li>
-        </ul>
-      </nav>
-    </header>
+    <div class="site-wrapper">
+      <div class="site-wrapper-inner">
+        <div class="cover-container">
+          <header class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand"><a href="/">Pointwise Musings</a></h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li><a href="/archive.html">Posts</a></li>
+                  <li><a href="/about.html">About</a></li>
+                  <!-- <li><a href="/sicp-challenge.html">The SICP challenge</a></li> -->
+                </ul>
+              </nav>
+            </div>
+          </header>
 
-    <div id="content">
-      <h1>$title$</h1>
+          <div class="inner cover">
+            <h1 class="cover-heading">$title$</h1>
 
-      $body$
+            $body$
+          </div>
+
+          <footer class="mastfoot">
+            <p>
+              Site proudly powered by
+              <a href="http://www.gnu.org/software/emacs/">Emacs</a>,
+              <a href="http://jaspervdj.be/hakyll">Hakyll</a> and
+              <a href="http://johnmacfarlane.net/pandoc/">Pandoc</a>
+            </p>
+
+            <p>
+              You can find me at
+              <a href="https://twitter.com/anler">Twitter</a>,
+              <a href="https://github.com/anler">Github</a> and
+              <a href="http://stackoverflow.com/users/544707/anler">Stack Overflow</a>
+            </p>
+
+            <p>
+              All the content of this site is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a> license.
+              Code snippets in the pages are released under <a href="http://opensource.org/licenses/BSD-2-clause">The simplified BSD License</a>, unless otherwise specified.
+            </p>
+
+          </footer>
+        </div>
+      </div>
     </div>
-
-    <footer>
-      <p>
-        Site proudly powered by
-        <a href="http://www.gnu.org/software/emacs/">Emacs</a>,
-        <a href="http://jaspervdj.be/hakyll">Hakyll</a> and
-        <a href="http://johnmacfarlane.net/pandoc/">Pandoc</a>
-      </p>
-
-      <p>
-        You can find me at
-        <a href="https://twitter.com/anler">Twitter</a>,
-        <a href="https://github.com/anler">Github</a> and
-        <a href="http://stackoverflow.com/users/544707/anler">Stack Overflow</a>
-      </p>
-
-      <p>
-        All the content of this site is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a> license.
-        Code snippets in the pages are released under <a href="http://opensource.org/licenses/BSD-2-clause">The simplified BSD License</a>, unless otherwise specified.
-      </p>
-
-    </footer>
 
     <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </body>

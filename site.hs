@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
+import qualified Data.Set            as S
 import           Hakyll
-import qualified Data.Set as S
 import           Text.Pandoc.Options
 
 config :: Configuration
@@ -31,7 +31,14 @@ main = hakyllWith config $ do
     match "sicp/*" $ do
         route $ setExtension "html"
         compile $ pandocMathCompiler
-            >>= loadAndApplyTemplate "templates/sicp.html"    postCtx
+            >>= loadAndApplyTemplate "templates/exercise.html" postCtx
+            >>= loadAndApplyTemplate "templates/default.html" postCtx
+            >>= relativizeUrls
+
+    match "cis194/*" $ do
+        route $ setExtension "html"
+        compile $ pandocMathCompiler
+            >>= loadAndApplyTemplate "templates/exercise.html" postCtx
             >>= loadAndApplyTemplate "templates/default.html" postCtx
             >>= relativizeUrls
 

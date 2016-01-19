@@ -1,0 +1,3 @@
+React came in and changed the game, the main reason of such a success I think have been its idea Virtual Dom algorithm:
+- it allowed us to declarative update the UI removing all those clunky imperative updates to the DOM
+- UI can now be modeled as a function from state to virtual dom openning new paths for writing ui applications both web and native

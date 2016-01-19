@@ -1,108 +1,200 @@
-* {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box
-}
+@import url(https://fonts.googleapis.com/css?family=Indie+Flower);
+@import url(https://fonts.googleapis.com/css?family=Raleway);
+@import url(http://fonts.googleapis.com/css?family=Roboto);
+@import url(http://fonts.googleapis.com/css?family=Roboto+Condensed);
 
+/*
+ * Base structure
+ */
+html,
 body {
-  font-family: "Computer Modern Serif";
-  color: black;
-  font-size: 18px;
-  width: 700px;
-  margin: 0 auto;
+  height: 100%;
+  color: #333333;
+  font-family: 'Roboto', Serif;
 }
-
-#header {
-  width: 100%;
+bodyp {
+  color: #fff;
   text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+h1,h2,h3,h4 {
+  font-family: Raleway;
+}
+p, ul {
+  font-size: 16px;
+  line-height: 1.75;
+  margin: 0 0 20px;
 }
 
-#header ul {
-  list-style: none;
+.avatar {
+  background-image: url('/images/pic.jpg');
+  background-size: cover;
+  margin-left: auto;
+  margin-right: auto;
+  height: 100px;
+  width: 100px;
+  position: relative;
+  border: 2px solid white;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  -webkit-box-shadow: 0 0 6px 0 rgba(0,0,0,0.35);
+  box-shadow: 0 0 6px 0 rgba(0,0,0,0.35);
 }
-#header li {
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+}
+.site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top;
+}
+.cover-container {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Padding for spacing */
+.inner {
+  padding: 30px;
+}
+.inner.cover {
+  margin-top: 120px;
+}
+
+/*
+ * Header
+ */
+.masthead {
+  position: absolute;
+  top: 0;
+}
+.masthead-brand {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: 'Indie Flower', serif;
+}
+.masthead a {
+  color: inherit;
+}
+.masthead a:hover {
+  /* text-decoration: none; */
+}
+.masthead-nav > li {
   display: inline-block;
 }
-#header li + li:before {
-  display: inline-block;
-  content: "\00B7 \00a0";
-  color: #ccc;
+.masthead-nav > li + li {
+  margin-left: 20px;
+}
+.masthead-nav > li > a {
+  padding-right: 0;
+  padding-left: 0;
+  color: #333;
+}
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus {
+  text-decoration: underline;
+  background-color: transparent;
 }
 
-#content {
-  clear: both;
+@media (min-width: 768px) {
+  .masthead-brand {
+    float: left;
+  }
+  .masthead-nav {
+    float: right;
+  }
 }
 
-footer {
-  margin: 80px 0 0;
+
+/*
+ * Cover
+ */
+
+.cover {
+  padding: 0 20px;
+}
+.cover .btn-lg {
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+
+/*
+ * Footer
+ */
+
+.mastfoot {
+  margin-top: 3em;
+}
+.mastfoot p {
+  color: #999; /* IE8 proofing */
   text-align: center;
   font-size: 70%;
-  color: black;
-  clear: both;
-}
-footer > p {
   margin: 0;
-  line-height: 1.5;
 }
 
-h1 { font-size: 24px; }
-h2 { font-size: 20px; }
-h3, h4, h5 { font-size: 18px; }
 
-pre {
-  display: block;
-  margin: 0;
-  padding: 10px;
-  overflow-x: auto;
-}
-blockquote {
-  padding: 0 0 0 20px;
-  margin: 0 30px 20px -8px;
-  border-left: 8px solid #666;
-  color: #666;
-}
-blockquote p:last-child {
-  margin-bottom: 0;
-}
+/*
+ * Affix and center
+ */
 
-p.post-info { font-style: italic; }
-
-/* mobile: 21em */
-@media all and (min-width: 21em) { 
-  
-  pre {
-    font-size: 75%;
-    margin-left: 0px;
+@media (min-width: 768px) {
+  /* Start the vertical centering */
+  .site-wrapper-inner {
   }
-  
-  p code {
-    font-size: 65%;
+  /* Handle the widths */
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 100%; /* Must be percentage or pixels for horizontal alignment */
   }
-
-  img {
-    width: 350px;
-  }
-
-  img.small {
-    width: 280px;
-  }
-
-
 }
 
-/* browser: 90em*/
-@media all and (min-width: 80em) {
-  body {
+@media (min-width: 992px) {
+  .masthead,
+  .mastfoot,
+  .cover-container {
     width: 700px;
-    margin: 0 auto;
   }
-  pre {
-    font-size: 80%;
-  }
+}
 
-  p > code {
-    font-size: 65%;
-  }
+.post-info {
+  font-style: italic;
+}
 
+table.sourceCode,
+tr.sourceCode,
+td.lineNumbers,
+td.sourceCode,
+table.sourceCode pre {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    border: none
+}
 
+td.sourceCode {
+    padding-left: 5px
+}
+
+code.sourceCode span.kw {
+    font-weight: bold
+}
+
+code.sourceCode span.co {
+    font-style: italic
+}
+
+code.sourceCode span.er {
+    color: #D30102;
+    border: 1px solid #ef2929
+}
+pre {
+  background-color: #fcfcfc;
+  border: none;
 }

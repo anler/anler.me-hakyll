@@ -1,0 +1,21 @@
+Lambda calculus was discovered, not invented
+
+- expressions
+- abstractions
+- variables
+
+- beta reduction
+- beta normal form
+- alpha transformation
+
+Rules:
+- functions of only one argument, multiple-arguments are emulated through currying
+- function application is left associative
+
+You don't need anything else to do any kind of computation.
+
+Functions without free variables are called /combinators/. (/pure/ lambda calculus)
+
+#+BEGIN_QUOTE
+As pointed out by Raymond Smullyan the eminent logician and author of several puzzle books, the theory of combinators is an abstract science dealing with objects whose only important property is how they act upon each other. We are free to choose other properties of these objects in any way we like. In his delightful book To mock a mockingbird, Smullyan (1985) chooses birds for his combinators, in memory of Haskell Curry, an early pioneer in the theory of combinators (1958) and an avid bird-watcher.
+#+END_QUOTE

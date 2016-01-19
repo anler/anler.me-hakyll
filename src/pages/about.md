@@ -14,11 +14,4 @@ Abstract Algebra and Category Theory.
 I love all kind of music, from jazz to salsa going through stoner, blues and funk. If you are in
 Madrid and you're up to taste some damn good craft beer, let me know!
 
-* Colophon
-
-- Site generator: [[http://jaspervdj.be/hakyll/][Hakyll]]
-- Hosting: [[https://www.digitalocean.com/?refcode%3De4fabf62c05f][Digital Ocean (referral link)]]
-- Editor: [[https://www.gnu.org/software/emacs/][Emacs]]
-- Server: [[http://nginx.org/][Nginx]]
-- Keyboard: [[https://www.kinesis-ergo.com/shop/advantage-for-pc-mac/][Kinesis Advantage]]
-- Laptop: [[http://shop.lenovo.com/il/en/laptops/thinkpad/t-series/t440s/][Lenovo Thinkpad T440s]]
+<div class="avatar"></div>
