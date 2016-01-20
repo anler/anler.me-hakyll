@@ -1,0 +1,42 @@
+---
+title: Be imperative again... I dare you!
+tags: functional programming
+---
+
+For a frontend project I'm working on I decided I wasn't going to use AngularJS for a very simple reason: is a kind of a pain to do async, my codebase was bloated with things like this:
+
+#+BEGIN_SRC javascript
+  function doSomething() {
+    this.someApiService.list().then((data) => {
+      this.listOfObjects = data.list;
+      ...
+    });
+    ...
+  }
+#+END_SRC
+
+I see that code and think about the blog post: [[https://blog.domenic.me/youre-missing-the-point-of-promises/][You're missing the point of promises]], and can do anything but agree.
+
+I'm a *BIG* fan of functional programming as you can imagine, I truly believe composition is *THE WAY* of controlling complexity, and functional programming is all about composing things (basically because category theory is behind of it).
+
+I love the idea of the black-box abstraction, and how by making a function always receive something and return something I can pay only attention to those 'something' and care none about the function implementation.
+
+So I said, enough! I'm going to use something as functionally-pure as I'm able to do for this project, so the quest for inspiration began... and ended, in [[http://elm-lang.org/][Elm]]. I've been following the development of Elm since a while, and even when I prefer [[http://www.purescript.org/][PureScript]] at times, I acknowledge the elegance and simplicity of Elm and its [[https://github.com/evancz/elm-architecture-tutorial][Model-View-Update pattern]], it's just the inspiration I need to create some sort of [[https://github.com/rackt/redux/][Redux]] but with an api I'm more happy with (secret sauce: infinite streams of data, in my case using [[https://github.com/Reactive-Extensions/RxJS/][Rx]] but other exists as well).
+
+After some work, I'm very proud with the solution I've got even when it is basically Elm signals and some other toppings on top, written all in JS.
+
+Now, in no place of my codebase you will find things like:
+
+#+BEGIN_SRC javascript
+  someObject.someAttribute = somethingElse;
+#+END_SRC
+
+or functions with ~undefined~ or ~null~ return values.
+
+Even functions that are async return real values, this time using Observables because they are /lazy/ (aka cold) and Promises are not (aka hot) and that becomes a problem when unit testing.
+
+Also side-effecting code is evaluated in one concrete point of the application and you can deactivate them entirely if you wish without changing the application, and things like changing the url or writing to the local storage are treated as side-effects of the application state.
+
+The only thing I'm still missing is well, write in Elm/PureScript directly since they give me safety and expressiveness through their higher-kinded type systems, but I can't have everything just yet.
+
+If you're curious you can take a look at the custom Redux or Elm I've come with: [[https://github.com/kaleidos/olmo][Olmo]]. But it totally lacks documentation, it's not intended to become a /framework/ and have no examples at the moment, maybe when I have covered more real-world-examples in the current application I'm building with it I will update it so people who want to use something similar and are not allowed to use Elm can borrow from it.
