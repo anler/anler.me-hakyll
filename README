@@ -1,1 +1,3 @@
 This is the source code of my personal home page.
+
+npm i -g bower less

@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>$title$ | Funktionλdelic</title>
+    <title>$title$ | anler.me</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <link rel="apple-touch-icon" sizes="57x57" href="/images/apple-icon-57x57.png">
@@ -20,46 +20,38 @@
     <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
     <link rel="stylesheet" type="text/css" href="/css/default.css">
   </head>
   <body>
-    <div class="container">
-      <header class="four columns sidebar">
 
+    <div class="container">
+      <header>
         <nav>
-          <h1 id="logo">Funktionλdelic</h1>
-          <ul class="nav masthead-nav">
-            <li><a href="/">Home</a></li>
-            <li><a href="/archive.html">Archive</a></li>
-            <li><a href="/about.html">About</a></li>
-            <li><a target="blank" href="https://pgp.mit.edu/pks/lookup?op=get&search=0x398FA8928C2E4AF5">PGP Key</a></li>
-            <li><a target="blank" href="http://stackoverflow.com/users/544707/anler">Stack Overflow</a></li>
-            <li><a target="blank" href="https://github.com/anler">Github</a></li>
-            <li><a target="blank" href="https://twitter.com/anler">Twitter</a></li>
+          <ul>
+            <li class="tl">Anler(7)</li>
+            <li class="tc"><a href="/">Pointwise Musings</a></li>
+            <li class="tr">Anler(7)</li>
           </ul>
         </nav>
-
       </header>
-      <section class="eleven columns offset-by-four content">
-        <h1 class="cover-heading">$title$</h1>
 
+      <section id="main">
         $body$
       </section>
 
-      <footer class="twelve columns offset-by-four">
-        <p>
-          Site proudly powered by
-          <a href="http://www.gnu.org/software/emacs/">Emacs</a>,
-          <a href="http://jaspervdj.be/hakyll">Hakyll</a> and
-          <a href="http://johnmacfarlane.net/pandoc/">Pandoc</a>
-        </p>
-        <p>
-          All the content of this site is licensed under a <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0</a> license.
-          Code snippets in the pages are released under <a href="http://opensource.org/licenses/BSD-2-clause">The simplified BSD License</a>, unless otherwise specified.
-        </p>
-
+      <footer>
+        <nav>
+          <ul>
+            <li class="tl">$lastCommit$</li>
+            <li class="tc">$lastUpdate$</li>
+            <li class="tr"><a href="/colofon/">Colofón</a></li>
+          </ul>
+        </nav>
       </footer>
     </div>
+
     <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </body>
 </html>

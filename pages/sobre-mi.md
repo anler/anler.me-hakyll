@@ -1,6 +1,8 @@
 ---
-title: About
+title: Sobre mi
 ---
+
+## Sobre mi
 
 Hello, my name is Anler Hernández Peral, I'm a software engineer specialized in full-stack web
 development, with years of experience in Python, PHP, and Javascript.
