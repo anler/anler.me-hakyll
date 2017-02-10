@@ -1,10 +1,10 @@
 {-# LANGUAGE OverloadedStrings #-}
-import           Control.Monad       (forM_)
+import           Control.Monad       (filterM, forM_)
 import           Data.Monoid         ((<>))
 import qualified Data.Set            as S
 import           Data.Time.Clock
 import           Data.Time.Format
-import           Data.Time.LocalTime
+import           Debug.Trace
 import           Hakyll
 import           System.FilePath
 import           System.Process
@@ -21,9 +21,7 @@ deployCmd = "./build.sh && rsync --checksum -ave 'ssh' --delete _site/* calisto:
 main :: IO ()
 main = do
   lastCommit <- readProcess "git" ["rev-parse", "--short", "master"] ""
-  lastUpdate <- do
-    utcTime <- getCurrentTime
-    return $ formatTime defaultTimeLocale "%d/%m/%Y" utcTime
+  lastUpdate <- getCurrentTime >>= return . formatTime defaultTimeLocale "%d/%m/%Y"
 
   let defaultCtx = constField "lastUpdate" lastUpdate
                    <> constField "lastCommit" lastCommit
@@ -75,7 +73,11 @@ hakyllRules defaultCtx = do
   tags <- buildTags "posts/*" (fromCapture "tags/*.html")
 
   match "posts/*" $ do
-    route $ setExtension "html" `composeRoutes` cleanRoute
+    let postPublished meta = const (maybe "" (++ "-") (lookupString "published" meta))
+        postTitle meta = gsubRoute "posts/" $ postPublished meta
+    route $ setExtension "html"
+      `composeRoutes` metadataRoute postTitle
+      `composeRoutes` cleanRoute
     compile $ pandocMathCompiler
       >>= loadAndApplyTemplate "templates/post.html" (postCtxWithTags tags)
       >>= loadAndApplyTemplate "templates/default.html" defaultCtx
@@ -84,31 +86,24 @@ hakyllRules defaultCtx = do
 
   tagsRules tags $ \tag pattern -> do
     let title = "Entradas etiquetadas \"" ++ tag ++ "\""
-    route $ idRoute
+    route $ setExtension "html"
+      `composeRoutes` gsubRoute "tags/" (const "etiqueta-")
+      `composeRoutes` cleanRoute
     compile $ do
       posts <- recentFirst =<< loadAll pattern
       let ctx = constField "title" title
                 <> listField "posts" postCtx (return posts)
                 <> defaultCtx
       makeItem ""
-        >>= loadAndApplyTemplate "templates/tag-list.html" ctx
+        >>= loadAndApplyTemplate "templates/tag-list.html" (constField "tag" tag <> ctx)
         >>= loadAndApplyTemplate "templates/default.html" ctx
         >>= relativizeUrls
-
-  match "drafts/*" $ do
-    route $ gsubRoute "drafts/" (const "borradores/")
-      `composeRoutes` setExtension "html"
-      `composeRoutes` cleanRoute
-    compile $ pandocMathCompiler
-      >>= loadAndApplyTemplate "templates/draft.html" postCtx
-      >>= loadAndApplyTemplate "templates/default.html" defaultCtx
-      >>= relativizeUrls
-      >>= useCleanUrls
+        >>= useCleanUrls
 
   create ["archivo.html"] $ do
     route $ idRoute `composeRoutes` cleanRoute
     compile $ do
-      posts <- recentFirst =<< loadAll "posts/*"
+      posts <- recentFirst =<< publishedOnly =<< loadAll "posts/*"
       let archiveCtx = listField "posts" postCtx (return posts)
                        <> constField "title" "Archivo"
                        <> defaultCtx
@@ -121,7 +116,7 @@ hakyllRules defaultCtx = do
   match "index.html" $ do
     route idRoute
     compile $ do
-      posts <- recentFirst =<< loadAll "posts/*"
+      posts <- recentFirst =<< publishedOnly =<< loadAll "posts/*"
       let indexCtx = listField "posts" postCtx (return posts)
                      <> constField "title" "Inicio"
                      <> defaultCtx
@@ -130,13 +125,32 @@ hakyllRules defaultCtx = do
         >>= applyAsTemplate indexCtx
         >>= loadAndApplyTemplate "templates/default.html" indexCtx
         >>= relativizeUrls
+        >>= useCleanUrls
 
   match "templates/*" $ compile templateCompiler
 
+publishedOnly :: MonadMetadata m => [Item a] -> m [Item a]
+publishedOnly items = filterM isNotDraft items
+
 postCtx :: Context String
 postCtx =
-    dateField "date" "%B %e, %Y" <>
+    dateField "date" "%d/%m/%Y" <>
+    field "id" ((`getMetadataField'` "id") . itemIdentifier) <>
+    field "teaser" ((`getMetadataField'` "teaser") . itemIdentifier) <>
     defaultContext
+
+isDraft :: MonadMetadata m => Item a -> m Bool
+isDraft item = do
+  maybeRawValue <- getMetadataField (itemIdentifier item) "draft"
+  return $ case maybeRawValue of
+             Just "true" -> True
+             _           -> False
+
+isNotDraft :: MonadMetadata m => Item a -> m Bool
+isNotDraft = fmap not . isDraft
+
+postCtxWithTags :: Tags -> Context String
+postCtxWithTags = (<> postCtx) . tagsField "tags"
 
 pandocMathCompiler :: Compiler (Item String)
 pandocMathCompiler =
@@ -152,9 +166,6 @@ pandocMathCompiler =
       writerExtensions = newExtensions
       , writerHTMLMathMethod = MathJax ""
       }
-
-postCtxWithTags :: Tags -> Context String
-postCtxWithTags = (<> postCtx) . tagsField "tags"
 
 stripRoute :: String -> Routes
 stripRoute = (`gsubRoute` const "")

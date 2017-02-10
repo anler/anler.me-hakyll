@@ -2,18 +2,26 @@
 title: Sobre mi
 ---
 
-## Sobre mi
+## Sobre mi 
 
-Hello, my name is Anler Hernández Peral, I'm a software engineer specialized in full-stack web
-development, with years of experience in Python, PHP, and Javascript.
+Me llamo Anler y nací en Ciudad de La Habana, Cuba 🇨🇺, en 1986. Allí estuve viviendo hasta los 21 años cuando al terminar el segundo año de carrera (Ingeniería Automática) tuve la oportunidad de irme a vivir a Madrid, España 🇪🇸. Desde entonces me he ganado la vida como programador, primero con PHP, Python y JavaScript, y luego con Scala (y ojalá que en un futuro con Haskell 🙏).
 
-I was born in Havana Cuba in 1986 where I spent most of my youth and move to Spain at the age of 21
-where I began working as a software engineer.
+Desde que dejé los estudios me he acostumbrado a investigar por mi cuenta, y aún cuando pienso que tener una educación formal en ciencias de la computación es muy importante, creo que el ir re-descubriendo todo por mi cuenta me ha mantenido motivado y con ganas de seguir aprendiendo.
 
-Currently I'm working as a full-time fronted web developer using Angular and fascinated by Haskell,
-Abstract Algebra and Category Theory.
+El recurso que más me ha ayudado a aprender ha sido sin dudas el leer libros. Es por ello que os dejo una pequeña recomendación de los que forman parte de mi biblioteca personal:
 
-I love all kind of music, from jazz to salsa going through stoner, blues and funk. If you are in
-Madrid and you're up to taste some damn good craft beer, let me know!
+* [ANSI Common LISP](https://www.amazon.com/ANSI-Common-LISP-Paul-Graham/dp/0133708756)
+* [Haskell Programming From First Principles](http://haskellbook.com)
+* [Introduction to Functional Programming](https://www.amazon.com/Introduction-Functional-Programming-International-Computing/dp/0134841972)
+* [Python Essential Reference](https://www.amazon.es/Python-Essential-Reference-Developers-Library/dp/0672329786/ref=sr_1_3?ie=UTF8&qid=1486418842&sr=8-3&keywords=python+reference)
+* [Structure and Interpretation of Computer Programs](https://mitpress.mit.edu/sicp/full-text/book/book.html)
+* [The Little Schemer](https://mitpress.mit.edu/books/little-schemer)
 
-<div class="avatar"></div>
+## Contacto
+
+* [Clave PGP](https://pgp.mit.edu/pks/lookup?op=get&search=0x398FA8928C2E4AF5)
+* [Github](https://github.com/anler)
+* [Keybase](https://keybase.io/anler)
+* [Linkedin](https://es.linkedin.com/in/anler)
+* [StackOverflow](http://stackoverflow.com/users/544707/anler)
+* [Twitter](https://twitter.com/anler)

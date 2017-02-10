@@ -8,3 +8,4 @@
 /cabal.sandbox.config
 ltxpng/
 /.stack-work
+/.DS_Store

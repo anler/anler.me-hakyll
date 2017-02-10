@@ -1,12 +1,35 @@
-<p class="post-info">
-  Posted on $date$
-  $if(author)$<br>by $author$ $endif$
-  $if(tags)$<br> Tagged: $tags$  $endif$
+<h2>Título</h2>
+<p>$title$</p>
+
+<h2>Meta</h2>
+<p>
+  Publicado: $date$
+  $if(tags)$<br>
+  Etiquetas: $tags$
+  $endif$
 </p>
 
+$if(teaser)$
+<h2>Sinopsis</h2>
+<p>$teaser$</p>
+$endif$
+
+<h2>Descripción</h2>
 <article>
   $body$
 </article>
 
-<a href="https://twitter.com/share" class="twitter-share-button" data-via="anler">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+<h2>Comentarios</h2>
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = "https://www.anler.me$url$";
+  this.page.identifier = "$id$";
+};
+(function() {
+var d = document, s = d.createElement('script');
+s.src = '//anler-me.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>

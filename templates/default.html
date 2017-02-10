@@ -22,7 +22,8 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
-    <link rel="stylesheet" type="text/css" href="/css/default.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/css/default.css?$lastCommit$">
   </head>
   <body>
 
@@ -30,9 +31,9 @@
       <header>
         <nav>
           <ul>
-            <li class="tl">Anler(7)</li>
+            <li class="tl"><a href="/">Anler.me(7)</a></li>
             <li class="tc"><a href="/">Pointwise Musings</a></li>
-            <li class="tr">Anler(7)</li>
+            <li class="tr"><a href="/">Anler.me(7)</a></li>
           </ul>
         </nav>
       </header>
@@ -44,14 +45,24 @@
       <footer>
         <nav>
           <ul>
-            <li class="tl">$lastCommit$</li>
+            <li class="tl"><a href="https://github.com/anler/anler.me/tree/$lastCommit$">$lastCommit$</a></li>
             <li class="tc">$lastUpdate$</li>
             <li class="tr"><a href="/colofon/">Colofón</a></li>
           </ul>
         </nav>
       </footer>
     </div>
-
-    <script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/highlight.min.js" integrity="sha256-KbfTjB0WZ8vvXngdpJGY3Yp3xKk+tttbqClO11anCIU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/haskell.min.js" integrity="sha256-WxYLWg8NFyyEq+Zs9pVsDQmlFpJt+733DecPx5+hrQw=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/languages/elm.min.js" integrity="sha256-cI1xiiNn9/uOE9r1jsvpehwxqImieM4sK06tzr+r4YU=" crossorigin="anonymous"></script>
+    <script>
+      hljs.initHighlightingOnLoad();
+      jQuery(document).ready(function() {
+      jQuery('pre code.hljs').each(function() {
+      jQuery(this).parent('.sourceCode').prepend(jQuery('<div class="lang"/>').append(this.result.language));
+      });
+      });
+    </script>
   </body>
 </html>

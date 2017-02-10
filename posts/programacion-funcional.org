@@ -1,0 +1,154 @@
+---
+title: Qué es la Programación Funcional
+id: programacion-funcional
+published: 2017-02-09
+tags: programacion-funcional
+teaser: ¿Qué es la programación funcional? Esto es algo que muchos se preguntan y que yo voy re-descubriendo una y otra vez. No obstante voy a intentar explicar aquí lo que para mi significa programar en el paradigma funcional y derrumbar algunos mitos alrededor del mismo.
+---
+
+Entonces, qué es programación funcional, para mi sencillamente es programar sin el uso de la *asignación*, con esto nada más ya estás programando en el paradigma funcional, porque con eso, todos tus procedimientos automáticamente van a cumplir la propiedad fundamental de los programas funcionales: [[https://en.wikipedia.org/wiki/Referential_transparency][la transparencia referencial]], que mira qué casualidad, es la misma propiedad que cumplen las funciones matemáticas.
+
+La programación funcional tiene unas reglas básicas pero unas implicaciones enormes, y desde luego que *no es* programar con funciones o utilizar *map* y *filter* como algunos creen.
+
+** El modelo de sustitución
+
+El modelo computacional de sustitución es un modelo que nos ayuda a hallar fácilmente el resultado de un programa compuesto por procedimientos. Este modelo es tan sencillo que los intérpretes escritos para dichos programas son solo [[https://en.wikipedia.org/wiki/Rewriting][sistemas de reescritura]] y sus reglas se pueden describir fácilmente en notación [[https://en.wikipedia.org/wiki/Backus%E2%80%93Naur_form][Backus-Naur]].
+
+Pogamos como ejemplo cuales serían estas reglas para el siguiente programa, y cómo hallamos el resultado:
+
+Programa:
+#+BEGIN_SRC js
+  sumOfSquares(2, 3)
+
+  function sumOfSquares(a, b) { return square(a) + square(b); }
+
+  function square(x) { return x * x; }
+#+END_SRC
+
+Las reglas para reducir la interpretar el programa:
+
+#+BEGIN_SRC text
+  sumOfSquares(a, b) → square(a) + square(b)
+  square(x)          → x * x
+#+END_SRC
+
+Aplicando dichas reglas para hallar el resultado de nuestro programa:
+
+#+BEGIN_SRC text
+  sumOfSquares(2, 3)
+                  = square(2) + square(3)
+                  = 2 * 2 + 3 * 3
+#+END_SRC
+
+Es decir, el resultado de nuestro programa es ~2 * 2 + 3 * 3~, si ampliamos nuestro intérprete con reglas que expliquen cómo implementar los operadores mátematicos ~+~ y ~*~, obtendríamos entonces como resultado ~13~.
+
+** El coste de introducir la asignación
+
+Aunque no lo parezca, el contar con la asignación en nuestros programas viene con unos costes asociados. 
+
+El primero y más evidente es que ya no podemos utilizar el modelo de sustitución para fácilmente hallar el resultado de nuestros programas, y necesitamos otros modelos más complicados y [[https://en.wikipedia.org/wiki/Operational_semantics][operacionales]].
+
+El segundo es que nuestros objetos computacionales adquieren /identidad/ o /estado/. El principal problema de tratar con objetos que tienen identidad radica en el establecer igualdad entre ellos.
+
+Volviendo a un ejemplo:
+
+#+BEGIN_SRC js
+  function Person(name) {
+    this.name = name;
+  }
+
+  Person.prototype.setName = function(newName) { this.name = newName; }
+
+  var personA = new Person("Haskell");
+  var personB = new Person("Haskell");
+#+END_SRC
+
+Si a partir de ese código escribimos el siguiente programa:
+
+#+BEGIN_SRC js
+  var result = personA == personB;
+  personB.setName("Alonzo");
+#+END_SRC
+
+¿Es ~result~ verdadero o falso?
+
+Y en este otro programa:
+
+#+BEGIN_SRC js
+  personB.setName("Alonzo");
+  var result = personA == personB;
+
+#+END_SRC
+
+¿Es ~result~ verdadero o falso?
+
+El problema que quiero resultar es que la misma expresión ~personA == personB~ ha dado dos resultados distintos dependiendo de en que punto de nuestro programa aparezcan, es decir, por culpa de la asignación estamos minando nuestros programas de una gran fragilidad impresionante: cambiar el orden de nuestras líneas de código pueden hacer que nuestro programa siga funcionando pero que produzca resultados completamente distintos!
+
+** Evita caer en el "modificar objetos es más eficiente"
+
+El modificar objetos *no* es más eficiente, lo puede ser o no según las circunstancias. Si en tu programa realizas muchas copias de objetos porque no quieres que procedimientos destructivos muten dichos objetos, entonces va a ser más eficiente utilizar [[https://en.wikipedia.org/wiki/Persistent_data_structure][objetos inmutables y persistentes]].
+
+** ¿Por qué entonces necesitamos estado?
+
+Para mi existen principalmente dos razones, la segunda más crucial que la primera.
+
+La primera es que el estado nos permite construir objetos con mejor encapsulación.
+
+Tomemos como ejemplo esta función para generar números pseudo-aleatorios utilizando el algoritmo [[https://en.wikipedia.org/wiki/Linear_congruential_generator][LCG]]:
+
+#+BEGIN_SRC js
+  function mkRandomGenerator(seed) {
+    var previous = seed;
+    return function() {
+      var random = (previous * 7 + 7) % 10;
+      previous = random;
+      return random;
+    };
+  }
+
+  var randomNumber = mkRandomGenerator(7);
+  randomNumber(); // 6
+  randomNumber(); // 9
+#+END_SRC
+
+Gracias a que nuestro generador de números pseudo-aleatorios tiene estado, nada de la implementación interna del mismo "gotea" hacia nuestro programa.
+
+En cambio si intentamos hacer lo mismo pero sin estado obtenemos lo siguiente:
+
+#+BEGIN_SRC js
+  function randomNumber(seed) {
+    var random = (seed * 7 + 7) % 10;
+    return [random, random];
+  }
+
+  var [r1, seed2] = randomNumber(7);
+  var [r2, seed3] = randomNumber(seed2);
+  r1; // 6
+  r2; // 7
+#+END_SRC
+
+Como vemos, ahora cada vez que queremos obtener un número pseudo-aleatorio también obtenemos una nueva semilla para poder seguir generando valores, es decir, el detalle de implementación de nuestro algoritmo ha "goteado" hacia nuestro programa y ahora tenemos que ser conscientes de el mismo.
+
+¿Pero por qué digo que es la razón menos crucial? Pues porque con azúcar sintáctico podemos resolver el problema del goteo.
+
+Por ejemplo, en Haskell con azúcar sintáctico:
+
+#+BEGIN_SRC haskell
+  twoRandomNumbers = do
+    a <- randomNumber
+    b <- randomNumber
+    return (a, b)
+#+END_SRC
+
+En Haskell la sintaxis *do* no es más azúcar sintáctico para secuenciar funciones monádicas, en nuestro caso ~randomNumber~. Este ejemplo también desmiente otra concepción equivocada que circula por ahí que dice que las Monads en Haskell se introdujeron para lograr "efectos secundarios" o "escribir código impuro".
+
+La segunda razón por la cual necesitamos estados, la crucial, es porque es el único mecanismo que tenemos para lidiar con la indeterminación, y dado que los seres humanos vivimos en el presente la indeterminación la tenemos por todos lados, y es por ello también que necesitamos programas concurrentes.
+
+** Conclusiones
+
+Como ves introducir la asignación en nuestros programas nos complica el entendimiento de los mismos, pero peor aún hemos visto cómo es imposible deshacernos por completo de la asignación si queremos que dichos programas nos sean útiles para nosotros, los humanos, que vivimos prisioneros del presente, entonces, si no podemos programar funcionalmente al 100%, ¿por qué siquiera intentarlo? Y es aquí donde muchos se equivocan, no se trata de lograr programación funcional al 100% o no, se trata de buscar la proporción adecuada para que podamos hacer ambas cosas: programas robustos fáciles de depurar y útiles. Para mi esa proporción adecuada está precisamente en lenguajes "puros" como Haskell, donde el programa que escribes es funcional pero el /runtime/ se encarga de la parte no funcional.
+
+** Referencias
+
+- [[https://mitpress.mit.edu/sicp/full-text/book/book.html][Structure and Interpretation of Computer Programs]]
+- [[http://chimera.labs.oreilly.com/books/1230000000929][Parallel and Concurrent Programming in Haskell]]
