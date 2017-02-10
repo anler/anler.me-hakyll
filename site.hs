@@ -80,6 +80,7 @@ hakyllRules defaultCtx = do
       `composeRoutes` cleanRoute
     compile $ pandocMathCompiler
       >>= loadAndApplyTemplate "templates/post.html" (postCtxWithTags tags)
+      >>= saveSnapshot "content"
       >>= loadAndApplyTemplate "templates/default.html" defaultCtx
       >>= relativizeUrls
       >>= useCleanUrls
@@ -112,6 +113,22 @@ hakyllRules defaultCtx = do
         >>= loadAndApplyTemplate "templates/default.html" defaultCtx
         >>= relativizeUrls
         >>= useCleanUrls
+
+  create ["atom.xml"] $ do
+    route idRoute
+    compile $ do
+      let feedConfig =
+            FeedConfiguration { feedTitle = "anler.me: últimas entradas"
+                              , feedDescription = "Blog personal de anler"
+                              , feedAuthorName = "Anler Hernández Peral"
+                              , feedAuthorEmail = "inbox+blog@anler.me"
+                              , feedRoot = "https://anler.me"
+                              }
+          feedCtx = postCtx <> bodyField "description"
+      posts <- fmap (take 10) . recentFirst
+        =<< publishedOnly
+        =<< loadAllSnapshots "posts/*" "content"
+      renderAtom feedConfig feedCtx posts
 
   match "index.html" $ do
     route idRoute
