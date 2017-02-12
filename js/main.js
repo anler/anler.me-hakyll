@@ -1,7 +1,8 @@
 (function($) {
   $(document).ready(function() {
-    $('article code.hljs').each(function() {
-      $(this).parent('.sourceCode').prepend($('<div class="lang"/>').append(this.result.language));
+    $('article pre.sourceCode').each(function() {
+      var self = $(this);
+      self.prepend($('<div class="lang"/>').append(self.attr("class").replace("sourceCode ", "")));
     });
   });
 })(jQuery);

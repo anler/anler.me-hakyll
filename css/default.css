@@ -51,11 +51,6 @@ blockquote {
 
 strong, b { font-weight: bold; }
 code { background: none; border: none; }
-code.hljs {
-  background: #f8f8f8;
-  border: none;
-  font-size: 0.8em;
-}
 
 article h1, article h2, article h3 {
   font-size: 0.9em;
@@ -63,14 +58,14 @@ article h1, article h2, article h3 {
   font-weight: bold;
 }
 
-.sourceCode { position: relative; }
+.sourceCode {
+  position: relative;
+  letter-spacing: -1px;
+}
 .lang {
-  text-align: right;
+  text-decoration: underline;
   font-size: 0.7em;
-  position: absolute;
-  top: 0px; right: 10px;
-  color: #666;
-  z-index: 100;
+  margin-left: 1.5rem;
 }
 
 pre.not-cool {
