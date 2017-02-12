@@ -50,8 +50,8 @@ blockquote {
 }
 
 strong, b { font-weight: bold; }
-
-code {
+code { background: none; border: none; }
+code.hljs {
   background: #f8f8f8;
   border: none;
   font-size: 0.8em;
@@ -71,6 +71,11 @@ article h1, article h2, article h3 {
   top: 0px; right: 10px;
   color: #666;
   z-index: 100;
+}
+
+pre.not-cool {
+  font-weight: bold;
+  letter-spacing: 2px;
 }
 
 /* Mobile first queries */
