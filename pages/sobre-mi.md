@@ -16,12 +16,3 @@ El recurso que más me ha ayudado a aprender ha sido sin dudas el leer libros. E
 * [Python Essential Reference](https://www.amazon.es/Python-Essential-Reference-Developers-Library/dp/0672329786/ref=sr_1_3?ie=UTF8&qid=1486418842&sr=8-3&keywords=python+reference)
 * [Structure and Interpretation of Computer Programs](https://mitpress.mit.edu/sicp/full-text/book/book.html)
 * [The Little Schemer](https://mitpress.mit.edu/books/little-schemer)
-
-## Contacto
-
-* [Clave PGP](https://pgp.mit.edu/pks/lookup?op=get&search=0x398FA8928C2E4AF5)
-* [Github](https://github.com/anler)
-* [Keybase](https://keybase.io/anler)
-* [Linkedin](https://es.linkedin.com/in/anler)
-* [StackOverflow](http://stackoverflow.com/users/544707/anler)
-* [Twitter](https://twitter.com/anler)
