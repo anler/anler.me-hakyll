@@ -1,0 +1,11 @@
+---
+title: Introducción a Hakyll
+id: intro-hakyll
+published: 2017-02-24
+tags: hakyll
+teaser: Vídeo de mi charla de introducción a Hakyll.
+---
+
+#+BEGIN_video
+#+HTML: <iframe width="560" height="315" src="https://www.youtube.com/embed/8d1vqd9_YqA" frameborder="0" allowfullscreen></iframe>
+#+END_video
