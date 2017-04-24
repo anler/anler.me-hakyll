@@ -1,0 +1,11 @@
+---
+title: Introducción a Elm a través de sistemas de tipos
+id: intro-elm
+published: 2017-05-22
+tags: elm
+teaser: Vídeo de mi charla de introducción a Elm a través de sistemas de tipos.
+---
+
+#+BEGIN_video
+#+HTML: <iframe width="560" height="315" src="https://www.youtube.com/embed/zYg-Uywz9YM" frameborder="0" allowfullscreen></iframe>
+#+END_video
