@@ -1,10 +1,15 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>$title$ | anler.me</title>
+    <title>anler.me</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface|Encode+Sans|Titillium+Web" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="/css/style.css?$lastCommit$">
 
     <link rel="apple-touch-icon" sizes="57x57" href="/images/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/images/apple-icon-60x60.png">
@@ -19,40 +24,43 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="96x96" href="/images/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.9.0/styles/github.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="/css/default.css?$lastCommit$">
   </head>
-  <body>
 
-    <div class="container">
+  <body>
+    <div id="content">
       <header>
-        <nav>
-          <ul>
-            <li class="tl"><a href="/">Anler.me(7)</a></li>
-            <li class="tc"><a href="/">Pointwise Musings</a></li>
-            <li class="tr"><a href="/">Anler.me(7)</a></li>
-          </ul>
-        </nav>
+        <div class="container">
+          <p id="intro" class="abril big-text" >
+            ¡Hola!<br>My name is <u>Anler</u>. I'm a fullstack web developer living in Madrid.
+          </p>
+        </div>
       </header>
 
-      <section id="main">
-        $body$
-      </section>
-
+      <main>
+        <div class="container">
+          <p class="abril big-text center-text" >~</p>
+          <p>
+            I'm also a passionate and polyglot software engineer with
+            years of experience in web development. I have worked both
+            as a frontend and backend developer with a variety of
+            technologies, from dynamically/weakly-typed languages to
+            statically/strongly-typed ones. I love to learn from other
+            people as well as <a target="_blank" href="https://www.ironhack.com/en">teach</a> what I know, and usually I don't miss a meeting from the <a target="_blank" href="https://www.meetup.com/Open-Source-Weekends/">OSW</a>,
+            <a target="_blank" href="https://www.meetup.com/Scala-Programming-Madrid/">Scala</a> and <a target="_blank" href="https://www.meetup.com/Haskell-MAD/">Haskell</a> meetups.
+          </p>
+          <p>
+            You can find me on <a target="_blank" href="https://twitter.com/anler">Twitter</a>, <a target="_blank" href="https://es.linkedin.com/in/anler">Linkedin</a>, <a target="_blank" href="https://github.com/anler">GitHub</a> and <a target="_blank" href="http://stackoverflow.com/users/544707/anler">StackOverflow</a>.
+          </p>
+        </div>
+      </main>
       <footer>
-        <nav>
-          <ul>
-            <li class="tl"><a href="https://github.com/anler/anler.me/tree/$lastCommit$">$lastCommit$</a></li>
-            <li class="tc">$lastUpdate$</li>
-            <li class="tr"><a href="/colofon/">Colofón</a></li>
-          </ul>
-        </nav>
+        <div class="container">
+          <p>Current site version: <a target="_blank" href="https://github.com/anler/anler.me/tree/522d439">234023</a></p>
+        </div>
+        <div id="home-image">
+          <img src="/images/me.jpg">
+        </div>
       </footer>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <script src="/js/main.js?$lastCommit$"></script>
   </body>
 </html>
