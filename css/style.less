@@ -74,8 +74,8 @@ footer {
   img {
     position: relative;
     left: 50%;
-    width: 600px;
-    margin-left: -300px;
+    max-width: 96%;
+    transform: translateX(-50%)
   }
 }
 
@@ -96,11 +96,6 @@ footer {
     font-size: 1.8em;
   }
 
-  #pc-image {
-    width: 450px;
-    margin-left: -225px;
-  }
-
   .container {
     width: 75%;
   }
@@ -116,30 +111,7 @@ footer {
     font-size: 2em;
   }
 
-  #pc-image {
-    width: 600px;
-    margin-left: -300px;
-  }
-
   .container {
     width: 60%;
-  }
-}
-
-@media all and (min-width: 800px) {
-  #home-image {
-    img {
-      width: 800px;
-      margin-left: -400px;
-    }
-  }
-}
-
-@media all and (min-width: 1000px) {
-  #home-image {
-    img {
-      width: 1000px;
-      margin-left: -500px;
-    }
   }
 }
